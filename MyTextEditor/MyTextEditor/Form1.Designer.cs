@@ -31,27 +31,32 @@
             components = new System.ComponentModel.Container();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            새파일ToolStripMenuItem = new ToolStripMenuItem();
-            새창ToolStripMenuItem = new ToolStripMenuItem();
-            열기ToolStripMenuItem = new ToolStripMenuItem();
-            저장ToolStripMenuItem = new ToolStripMenuItem();
-            다른이름으로저장ToolStripMenuItem = new ToolStripMenuItem();
-            페이지설정ToolStripMenuItem = new ToolStripMenuItem();
-            인쇄ToolStripMenuItem = new ToolStripMenuItem();
-            끝내기ToolStripMenuItem = new ToolStripMenuItem();
+            NewFileToolTip = new ToolStripMenuItem();
+            NewMemoToolTip = new ToolStripMenuItem();
+            OpenToolTip = new ToolStripMenuItem();
+            SaveToolTip = new ToolStripMenuItem();
+            DnameSaveToolTip = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            PageSettingToolTip = new ToolStripMenuItem();
+            PrintToolTip = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            ExitToolTip = new ToolStripMenuItem();
             편집EToolStripMenuItem = new ToolStripMenuItem();
-            실행취소ToolStripMenuItem = new ToolStripMenuItem();
-            잘라내기ToolStripMenuItem = new ToolStripMenuItem();
-            복사ToolStripMenuItem = new ToolStripMenuItem();
-            붙여넣기ToolStripMenuItem = new ToolStripMenuItem();
-            삭제ToolStripMenuItem = new ToolStripMenuItem();
-            찾기ToolStripMenuItem = new ToolStripMenuItem();
-            다음찾기ToolStripMenuItem = new ToolStripMenuItem();
-            이전찾기ToolStripMenuItem = new ToolStripMenuItem();
-            바꾸기ToolStripMenuItem = new ToolStripMenuItem();
-            이동ToolStripMenuItem = new ToolStripMenuItem();
-            모두선택ToolStripMenuItem = new ToolStripMenuItem();
-            시간날짜ToolStripMenuItem = new ToolStripMenuItem();
+            DoCancleToolTip = new ToolStripMenuItem();
+            toolStripSeparator3 = new ToolStripSeparator();
+            CutTextToolTip = new ToolStripMenuItem();
+            CopyTextToolTip = new ToolStripMenuItem();
+            PasteTextToolTip = new ToolStripMenuItem();
+            DeleteTextToolTip = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            FindTextToolTip = new ToolStripMenuItem();
+            FindNextToolTip = new ToolStripMenuItem();
+            FindBeforeToolTip = new ToolStripMenuItem();
+            ChangeTextToolTip = new ToolStripMenuItem();
+            MoveTextToolTip = new ToolStripMenuItem();
+            toolStripSeparator5 = new ToolStripSeparator();
+            AllSelectTextToolTip = new ToolStripMenuItem();
+            TimeTextToolTip = new ToolStripMenuItem();
             서식OToolStripMenuItem = new ToolStripMenuItem();
             자동줄바꿈ToolStripMenuItem = new ToolStripMenuItem();
             글꼴ToolStripMenuItem = new ToolStripMenuItem();
@@ -64,11 +69,7 @@
             도움말HToolStripMenuItem = new ToolStripMenuItem();
             도구OToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
-            toolStripSeparator1 = new ToolStripSeparator();
-            toolStripSeparator2 = new ToolStripSeparator();
-            toolStripSeparator3 = new ToolStripSeparator();
-            toolStripSeparator4 = new ToolStripSeparator();
-            toolStripSeparator5 = new ToolStripSeparator();
+            MyTextArea = new RichTextBox();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             SuspendLayout();
@@ -84,155 +85,184 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 새파일ToolStripMenuItem, 새창ToolStripMenuItem, 열기ToolStripMenuItem, 저장ToolStripMenuItem, 다른이름으로저장ToolStripMenuItem, toolStripSeparator1, 페이지설정ToolStripMenuItem, 인쇄ToolStripMenuItem, toolStripSeparator2, 끝내기ToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { NewFileToolTip, NewMemoToolTip, OpenToolTip, SaveToolTip, DnameSaveToolTip, toolStripSeparator1, PageSettingToolTip, PrintToolTip, toolStripSeparator2, ExitToolTip });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(57, 20);
             fileToolStripMenuItem.Text = "파일(F)";
             // 
-            // 새파일ToolStripMenuItem
+            // NewFileToolTip
             // 
-            새파일ToolStripMenuItem.Name = "새파일ToolStripMenuItem";
-            새파일ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.N;
-            새파일ToolStripMenuItem.Size = new Size(252, 22);
-            새파일ToolStripMenuItem.Text = "새 파일";
+            NewFileToolTip.Name = "NewFileToolTip";
+            NewFileToolTip.ShortcutKeys = Keys.Control | Keys.N;
+            NewFileToolTip.Size = new Size(252, 22);
+            NewFileToolTip.Text = "새 파일";
+            NewFileToolTip.Click += NewFileToolTip_Click;
             // 
-            // 새창ToolStripMenuItem
+            // NewMemoToolTip
             // 
-            새창ToolStripMenuItem.Name = "새창ToolStripMenuItem";
-            새창ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.N;
-            새창ToolStripMenuItem.Size = new Size(252, 22);
-            새창ToolStripMenuItem.Text = "새 창";
+            NewMemoToolTip.Name = "NewMemoToolTip";
+            NewMemoToolTip.ShortcutKeys = Keys.Control | Keys.Shift | Keys.N;
+            NewMemoToolTip.Size = new Size(252, 22);
+            NewMemoToolTip.Text = "새 창";
             // 
-            // 열기ToolStripMenuItem
+            // OpenToolTip
             // 
-            열기ToolStripMenuItem.Name = "열기ToolStripMenuItem";
-            열기ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
-            열기ToolStripMenuItem.Size = new Size(252, 22);
-            열기ToolStripMenuItem.Text = "열기";
+            OpenToolTip.Name = "OpenToolTip";
+            OpenToolTip.ShortcutKeys = Keys.Control | Keys.O;
+            OpenToolTip.Size = new Size(252, 22);
+            OpenToolTip.Text = "열기";
             // 
-            // 저장ToolStripMenuItem
+            // SaveToolTip
             // 
-            저장ToolStripMenuItem.Name = "저장ToolStripMenuItem";
-            저장ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
-            저장ToolStripMenuItem.Size = new Size(180, 22);
-            저장ToolStripMenuItem.Text = "저장";
+            SaveToolTip.Name = "SaveToolTip";
+            SaveToolTip.ShortcutKeys = Keys.Control | Keys.S;
+            SaveToolTip.Size = new Size(252, 22);
+            SaveToolTip.Text = "저장";
+            SaveToolTip.Click += SaveToolTip_Click;
             // 
-            // 다른이름으로저장ToolStripMenuItem
+            // DnameSaveToolTip
             // 
-            다른이름으로저장ToolStripMenuItem.Name = "다른이름으로저장ToolStripMenuItem";
-            다른이름으로저장ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
-            다른이름으로저장ToolStripMenuItem.Size = new Size(252, 22);
-            다른이름으로저장ToolStripMenuItem.Text = "다른 이름으로 저장";
+            DnameSaveToolTip.Name = "DnameSaveToolTip";
+            DnameSaveToolTip.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
+            DnameSaveToolTip.Size = new Size(252, 22);
+            DnameSaveToolTip.Text = "다른 이름으로 저장";
             // 
-            // 페이지설정ToolStripMenuItem
+            // toolStripSeparator1
             // 
-            페이지설정ToolStripMenuItem.Name = "페이지설정ToolStripMenuItem";
-            페이지설정ToolStripMenuItem.Size = new Size(252, 22);
-            페이지설정ToolStripMenuItem.Text = "페이지 설정";
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(249, 6);
             // 
-            // 인쇄ToolStripMenuItem
+            // PageSettingToolTip
             // 
-            인쇄ToolStripMenuItem.Name = "인쇄ToolStripMenuItem";
-            인쇄ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.P;
-            인쇄ToolStripMenuItem.Size = new Size(252, 22);
-            인쇄ToolStripMenuItem.Text = "인쇄";
+            PageSettingToolTip.Name = "PageSettingToolTip";
+            PageSettingToolTip.Size = new Size(252, 22);
+            PageSettingToolTip.Text = "페이지 설정";
             // 
-            // 끝내기ToolStripMenuItem
+            // PrintToolTip
             // 
-            끝내기ToolStripMenuItem.Name = "끝내기ToolStripMenuItem";
-            끝내기ToolStripMenuItem.Size = new Size(180, 22);
-            끝내기ToolStripMenuItem.Text = "끝내기";
+            PrintToolTip.Name = "PrintToolTip";
+            PrintToolTip.ShortcutKeys = Keys.Control | Keys.P;
+            PrintToolTip.Size = new Size(252, 22);
+            PrintToolTip.Text = "인쇄";
+            PrintToolTip.Click += PrintToolTip_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(249, 6);
+            // 
+            // ExitToolTip
+            // 
+            ExitToolTip.Name = "ExitToolTip";
+            ExitToolTip.Size = new Size(252, 22);
+            ExitToolTip.Text = "끝내기";
             // 
             // 편집EToolStripMenuItem
             // 
-            편집EToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 실행취소ToolStripMenuItem, toolStripSeparator3, 잘라내기ToolStripMenuItem, 복사ToolStripMenuItem, 붙여넣기ToolStripMenuItem, 삭제ToolStripMenuItem, toolStripSeparator4, 찾기ToolStripMenuItem, 다음찾기ToolStripMenuItem, 이전찾기ToolStripMenuItem, 바꾸기ToolStripMenuItem, 이동ToolStripMenuItem, toolStripSeparator5, 모두선택ToolStripMenuItem, 시간날짜ToolStripMenuItem });
+            편집EToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { DoCancleToolTip, toolStripSeparator3, CutTextToolTip, CopyTextToolTip, PasteTextToolTip, DeleteTextToolTip, toolStripSeparator4, FindTextToolTip, FindNextToolTip, FindBeforeToolTip, ChangeTextToolTip, MoveTextToolTip, toolStripSeparator5, AllSelectTextToolTip, TimeTextToolTip });
             편집EToolStripMenuItem.Name = "편집EToolStripMenuItem";
             편집EToolStripMenuItem.Size = new Size(57, 20);
             편집EToolStripMenuItem.Text = "편집(E)";
             // 
-            // 실행취소ToolStripMenuItem
+            // DoCancleToolTip
             // 
-            실행취소ToolStripMenuItem.Name = "실행취소ToolStripMenuItem";
-            실행취소ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
-            실행취소ToolStripMenuItem.Size = new Size(180, 22);
-            실행취소ToolStripMenuItem.Text = "실행 취소";
+            DoCancleToolTip.Name = "DoCancleToolTip";
+            DoCancleToolTip.ShortcutKeys = Keys.Control | Keys.Z;
+            DoCancleToolTip.Size = new Size(179, 22);
+            DoCancleToolTip.Text = "실행 취소";
             // 
-            // 잘라내기ToolStripMenuItem
+            // toolStripSeparator3
             // 
-            잘라내기ToolStripMenuItem.Name = "잘라내기ToolStripMenuItem";
-            잘라내기ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.X;
-            잘라내기ToolStripMenuItem.Size = new Size(180, 22);
-            잘라내기ToolStripMenuItem.Text = "잘라내기";
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(176, 6);
             // 
-            // 복사ToolStripMenuItem
+            // CutTextToolTip
             // 
-            복사ToolStripMenuItem.Name = "복사ToolStripMenuItem";
-            복사ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.C;
-            복사ToolStripMenuItem.Size = new Size(180, 22);
-            복사ToolStripMenuItem.Text = "복사";
+            CutTextToolTip.Name = "CutTextToolTip";
+            CutTextToolTip.ShortcutKeys = Keys.Control | Keys.X;
+            CutTextToolTip.Size = new Size(179, 22);
+            CutTextToolTip.Text = "잘라내기";
             // 
-            // 붙여넣기ToolStripMenuItem
+            // CopyTextToolTip
             // 
-            붙여넣기ToolStripMenuItem.Name = "붙여넣기ToolStripMenuItem";
-            붙여넣기ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.V;
-            붙여넣기ToolStripMenuItem.Size = new Size(180, 22);
-            붙여넣기ToolStripMenuItem.Text = "붙여넣기";
+            CopyTextToolTip.Name = "CopyTextToolTip";
+            CopyTextToolTip.ShortcutKeys = Keys.Control | Keys.C;
+            CopyTextToolTip.Size = new Size(179, 22);
+            CopyTextToolTip.Text = "복사";
             // 
-            // 삭제ToolStripMenuItem
+            // PasteTextToolTip
             // 
-            삭제ToolStripMenuItem.Name = "삭제ToolStripMenuItem";
-            삭제ToolStripMenuItem.ShortcutKeys = Keys.Delete;
-            삭제ToolStripMenuItem.Size = new Size(180, 22);
-            삭제ToolStripMenuItem.Text = "삭제";
+            PasteTextToolTip.Name = "PasteTextToolTip";
+            PasteTextToolTip.ShortcutKeys = Keys.Control | Keys.V;
+            PasteTextToolTip.Size = new Size(179, 22);
+            PasteTextToolTip.Text = "붙여넣기";
             // 
-            // 찾기ToolStripMenuItem
+            // DeleteTextToolTip
             // 
-            찾기ToolStripMenuItem.Name = "찾기ToolStripMenuItem";
-            찾기ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            찾기ToolStripMenuItem.Size = new Size(180, 22);
-            찾기ToolStripMenuItem.Text = "찾기";
+            DeleteTextToolTip.Name = "DeleteTextToolTip";
+            DeleteTextToolTip.ShortcutKeys = Keys.Delete;
+            DeleteTextToolTip.Size = new Size(179, 22);
+            DeleteTextToolTip.Text = "삭제";
             // 
-            // 다음찾기ToolStripMenuItem
+            // toolStripSeparator4
             // 
-            다음찾기ToolStripMenuItem.Name = "다음찾기ToolStripMenuItem";
-            다음찾기ToolStripMenuItem.ShortcutKeys = Keys.F3;
-            다음찾기ToolStripMenuItem.Size = new Size(180, 22);
-            다음찾기ToolStripMenuItem.Text = "다음 찾기";
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(176, 6);
             // 
-            // 이전찾기ToolStripMenuItem
+            // FindTextToolTip
             // 
-            이전찾기ToolStripMenuItem.Name = "이전찾기ToolStripMenuItem";
-            이전찾기ToolStripMenuItem.ShortcutKeys = Keys.Shift | Keys.F3;
-            이전찾기ToolStripMenuItem.Size = new Size(180, 22);
-            이전찾기ToolStripMenuItem.Text = "이전 찾기";
+            FindTextToolTip.Name = "FindTextToolTip";
+            FindTextToolTip.ShortcutKeys = Keys.Control | Keys.F;
+            FindTextToolTip.Size = new Size(179, 22);
+            FindTextToolTip.Text = "찾기";
             // 
-            // 바꾸기ToolStripMenuItem
+            // FindNextToolTip
             // 
-            바꾸기ToolStripMenuItem.Name = "바꾸기ToolStripMenuItem";
-            바꾸기ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.H;
-            바꾸기ToolStripMenuItem.Size = new Size(180, 22);
-            바꾸기ToolStripMenuItem.Text = "바꾸기";
+            FindNextToolTip.Name = "FindNextToolTip";
+            FindNextToolTip.ShortcutKeys = Keys.F3;
+            FindNextToolTip.Size = new Size(179, 22);
+            FindNextToolTip.Text = "다음 찾기";
             // 
-            // 이동ToolStripMenuItem
+            // FindBeforeToolTip
             // 
-            이동ToolStripMenuItem.Name = "이동ToolStripMenuItem";
-            이동ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.G;
-            이동ToolStripMenuItem.Size = new Size(180, 22);
-            이동ToolStripMenuItem.Text = "이동";
+            FindBeforeToolTip.Name = "FindBeforeToolTip";
+            FindBeforeToolTip.ShortcutKeys = Keys.Shift | Keys.F3;
+            FindBeforeToolTip.Size = new Size(179, 22);
+            FindBeforeToolTip.Text = "이전 찾기";
             // 
-            // 모두선택ToolStripMenuItem
+            // ChangeTextToolTip
             // 
-            모두선택ToolStripMenuItem.Name = "모두선택ToolStripMenuItem";
-            모두선택ToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.A;
-            모두선택ToolStripMenuItem.Size = new Size(180, 22);
-            모두선택ToolStripMenuItem.Text = "모두 선택";
+            ChangeTextToolTip.Name = "ChangeTextToolTip";
+            ChangeTextToolTip.ShortcutKeys = Keys.Control | Keys.H;
+            ChangeTextToolTip.Size = new Size(179, 22);
+            ChangeTextToolTip.Text = "바꾸기";
             // 
-            // 시간날짜ToolStripMenuItem
+            // MoveTextToolTip
             // 
-            시간날짜ToolStripMenuItem.Name = "시간날짜ToolStripMenuItem";
-            시간날짜ToolStripMenuItem.ShortcutKeys = Keys.F5;
-            시간날짜ToolStripMenuItem.Size = new Size(180, 22);
-            시간날짜ToolStripMenuItem.Text = "시간/날짜";
+            MoveTextToolTip.Name = "MoveTextToolTip";
+            MoveTextToolTip.ShortcutKeys = Keys.Control | Keys.G;
+            MoveTextToolTip.Size = new Size(179, 22);
+            MoveTextToolTip.Text = "이동";
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(176, 6);
+            // 
+            // AllSelectTextToolTip
+            // 
+            AllSelectTextToolTip.Name = "AllSelectTextToolTip";
+            AllSelectTextToolTip.ShortcutKeys = Keys.Control | Keys.A;
+            AllSelectTextToolTip.Size = new Size(179, 22);
+            AllSelectTextToolTip.Text = "모두 선택";
+            // 
+            // TimeTextToolTip
+            // 
+            TimeTextToolTip.Name = "TimeTextToolTip";
+            TimeTextToolTip.ShortcutKeys = Keys.F5;
+            TimeTextToolTip.Size = new Size(179, 22);
+            TimeTextToolTip.Text = "시간/날짜";
+            TimeTextToolTip.Click += TimeTextToolTip_Click;
             // 
             // 서식OToolStripMenuItem
             // 
@@ -303,36 +333,22 @@
             도구OToolStripMenuItem.Size = new Size(60, 20);
             도구OToolStripMenuItem.Text = "도구(O)";
             // 
-            // toolStripSeparator1
+            // MyTextArea
             // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(249, 6);
-            // 
-            // toolStripSeparator2
-            // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(249, 6);
-            // 
-            // toolStripSeparator3
-            // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(177, 6);
-            // 
-            // toolStripSeparator4
-            // 
-            toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(177, 6);
-            // 
-            // toolStripSeparator5
-            // 
-            toolStripSeparator5.Name = "toolStripSeparator5";
-            toolStripSeparator5.Size = new Size(177, 6);
+            MyTextArea.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            MyTextArea.Location = new Point(0, 27);
+            MyTextArea.Name = "MyTextArea";
+            MyTextArea.Size = new Size(800, 423);
+            MyTextArea.TabIndex = 1;
+            MyTextArea.Text = "";
+            MyTextArea.TextChanged += MyTextArea_TextChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(MyTextArea);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Form1";
@@ -348,31 +364,31 @@
 
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem 새파일ToolStripMenuItem;
-        private ToolStripMenuItem 새창ToolStripMenuItem;
-        private ToolStripMenuItem 열기ToolStripMenuItem;
-        private ToolStripMenuItem 저장ToolStripMenuItem;
-        private ToolStripMenuItem 다른이름으로저장ToolStripMenuItem;
-        private ToolStripMenuItem 페이지설정ToolStripMenuItem;
-        private ToolStripMenuItem 인쇄ToolStripMenuItem;
-        private ToolStripMenuItem 끝내기ToolStripMenuItem;
+        private ToolStripMenuItem NewFileToolTip;
+        private ToolStripMenuItem NewMemoToolTip;
+        private ToolStripMenuItem OpenToolTip;
+        private ToolStripMenuItem SaveToolTip;
+        private ToolStripMenuItem DnameSaveToolTip;
+        private ToolStripMenuItem PageSettingToolTip;
+        private ToolStripMenuItem PrintToolTip;
+        private ToolStripMenuItem ExitToolTip;
         private ToolStripMenuItem 편집EToolStripMenuItem;
         private ToolStripMenuItem 서식OToolStripMenuItem;
         private ToolStripMenuItem 보기VToolStripMenuItem;
         private ToolStripMenuItem 도움말HToolStripMenuItem;
         private ToolStripMenuItem 도구OToolStripMenuItem;
-        private ToolStripMenuItem 실행취소ToolStripMenuItem;
-        private ToolStripMenuItem 잘라내기ToolStripMenuItem;
-        private ToolStripMenuItem 복사ToolStripMenuItem;
-        private ToolStripMenuItem 붙여넣기ToolStripMenuItem;
-        private ToolStripMenuItem 삭제ToolStripMenuItem;
-        private ToolStripMenuItem 찾기ToolStripMenuItem;
-        private ToolStripMenuItem 다음찾기ToolStripMenuItem;
-        private ToolStripMenuItem 이전찾기ToolStripMenuItem;
-        private ToolStripMenuItem 바꾸기ToolStripMenuItem;
-        private ToolStripMenuItem 이동ToolStripMenuItem;
-        private ToolStripMenuItem 모두선택ToolStripMenuItem;
-        private ToolStripMenuItem 시간날짜ToolStripMenuItem;
+        private ToolStripMenuItem DoCancleToolTip;
+        private ToolStripMenuItem CutTextToolTip;
+        private ToolStripMenuItem CopyTextToolTip;
+        private ToolStripMenuItem PasteTextToolTip;
+        private ToolStripMenuItem DeleteTextToolTip;
+        private ToolStripMenuItem FindTextToolTip;
+        private ToolStripMenuItem FindNextToolTip;
+        private ToolStripMenuItem FindBeforeToolTip;
+        private ToolStripMenuItem ChangeTextToolTip;
+        private ToolStripMenuItem MoveTextToolTip;
+        private ToolStripMenuItem AllSelectTextToolTip;
+        private ToolStripMenuItem TimeTextToolTip;
         private ToolStripMenuItem 자동줄바꿈ToolStripMenuItem;
         private ToolStripMenuItem 글꼴ToolStripMenuItem;
         private ToolStripMenuItem 확대하기축소하기ToolStripMenuItem;
@@ -386,5 +402,6 @@
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripSeparator toolStripSeparator5;
+        private RichTextBox MyTextArea;
     }
 }
