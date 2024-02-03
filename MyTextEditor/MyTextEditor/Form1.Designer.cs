@@ -1,6 +1,6 @@
 ﻿namespace MyTextEditor
 {
-    partial class Form1
+    partial class 메모장
     {
         /// <summary>
         ///  Required designer variable.
@@ -104,6 +104,7 @@
             NewMemoToolTip.ShortcutKeys = Keys.Control | Keys.Shift | Keys.N;
             NewMemoToolTip.Size = new Size(252, 22);
             NewMemoToolTip.Text = "새 창";
+            NewMemoToolTip.Click += NewMemoToolTip_Click;
             // 
             // OpenToolTip
             // 
@@ -111,6 +112,7 @@
             OpenToolTip.ShortcutKeys = Keys.Control | Keys.O;
             OpenToolTip.Size = new Size(252, 22);
             OpenToolTip.Text = "열기";
+            OpenToolTip.Click += OpenToolTip_Click;
             // 
             // SaveToolTip
             // 
@@ -126,6 +128,7 @@
             DnameSaveToolTip.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
             DnameSaveToolTip.Size = new Size(252, 22);
             DnameSaveToolTip.Text = "다른 이름으로 저장";
+            DnameSaveToolTip.Click += DnameSaveToolTip_Click;
             // 
             // toolStripSeparator1
             // 
@@ -137,6 +140,7 @@
             PageSettingToolTip.Name = "PageSettingToolTip";
             PageSettingToolTip.Size = new Size(252, 22);
             PageSettingToolTip.Text = "페이지 설정";
+            PageSettingToolTip.Click += PageSettingToolTip_Click;
             // 
             // PrintToolTip
             // 
@@ -343,7 +347,7 @@
             MyTextArea.Text = "";
             MyTextArea.TextChanged += MyTextArea_TextChanged;
             // 
-            // Form1
+            // 메모장
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -351,7 +355,7 @@
             Controls.Add(MyTextArea);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Name = "Form1";
+            Name = "메모장";
             Text = "Form1";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

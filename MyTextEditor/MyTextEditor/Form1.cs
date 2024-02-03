@@ -2,13 +2,13 @@ using Microsoft.VisualBasic;
 
 namespace MyTextEditor
 {
-    public partial class Form1 : Form
+    public partial class 메모장 : Form
     {
 
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
 
-        public Form1()
+        public 메모장()
         {
             InitializeComponent();
         }
@@ -40,6 +40,46 @@ namespace MyTextEditor
             isTextChanged = false;
         }
 
+       
+
+        //새창(Ctrl+Shift+N)
+        private void NewMemoToolTip_Click(object sender, EventArgs e)
+        {
+            // 새 창을 만들기 위해 Form1의 복사본을 생성
+            메모장 newMemo = new 메모장();
+            newMemo.Show();
+        }
+
+        //열기(Ctrl+O)
+        private void OpenToolTip_Click(object sender, EventArgs e)
+        {
+            //현재 메모장에 수정이 있으면 저장 여부 후 열기 작업 진행
+            if (isTextChanged)
+            {
+                DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    SaveFile();
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            //OpenFileDialog 호출(.txt text 파일만 열기)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "텍스트 파일 (*.txt)|*.txt|모든 파일 (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentFilePath = openFileDialog.FileName;
+                MyTextArea.Text = File.ReadAllText(currentFilePath);
+                isTextChanged = false;
+            }
+        }
+
         // 저장(Ctrl+S)
         private void SaveToolTip_Click(object sender, EventArgs e)
         {
@@ -47,11 +87,27 @@ namespace MyTextEditor
         }
 
 
-        //프린트(Ctrl+P)
+        //다른 이름으로 저장(Ctrl+Shift+S)
+        private void DnameSaveToolTip_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //페이지 설정
+        private void PageSettingToolTip_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        //인쇄(Ctrl+P)
         private void PrintToolTip_Click(object sender, EventArgs e)
         {
         }
         #endregion
+
+
+
 
 
         #region 편집
@@ -111,5 +167,9 @@ namespace MyTextEditor
 
 
 
+
+
+
+        
     }
 }

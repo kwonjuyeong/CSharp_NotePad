@@ -3,7 +3,6 @@ C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\bin\Debug\net8.0-windows\M
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\bin\Debug\net8.0-windows\MyTextEditor.runtimeconfig.json
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\bin\Debug\net8.0-windows\MyTextEditor.dll
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\bin\Debug\net8.0-windows\MyTextEditor.pdb
-C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.Form1.resources
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.csproj.GenerateResource.cache
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.AssemblyInfoInputs.cache
@@ -15,3 +14,4 @@ C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\r
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.pdb
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.genruntimeconfig.cache
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\ref\MyTextEditor.dll
+C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.메모장.resources
