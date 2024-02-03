@@ -67,7 +67,6 @@
             기본값으로ToolStripMenuItem = new ToolStripMenuItem();
             상태표시줄ToolStripMenuItem = new ToolStripMenuItem();
             도움말HToolStripMenuItem = new ToolStripMenuItem();
-            도구OToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
             MyTextArea = new RichTextBox();
             menuStrip1.SuspendLayout();
@@ -76,7 +75,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, 편집EToolStripMenuItem, 서식OToolStripMenuItem, 보기VToolStripMenuItem, 도움말HToolStripMenuItem, 도구OToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, 편집EToolStripMenuItem, 서식OToolStripMenuItem, 보기VToolStripMenuItem, 도움말HToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -331,12 +330,6 @@
             도움말HToolStripMenuItem.Size = new Size(72, 20);
             도움말HToolStripMenuItem.Text = "도움말(H)";
             // 
-            // 도구OToolStripMenuItem
-            // 
-            도구OToolStripMenuItem.Name = "도구OToolStripMenuItem";
-            도구OToolStripMenuItem.Size = new Size(60, 20);
-            도구OToolStripMenuItem.Text = "도구(O)";
-            // 
             // MyTextArea
             // 
             MyTextArea.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -380,7 +373,6 @@
         private ToolStripMenuItem 서식OToolStripMenuItem;
         private ToolStripMenuItem 보기VToolStripMenuItem;
         private ToolStripMenuItem 도움말HToolStripMenuItem;
-        private ToolStripMenuItem 도구OToolStripMenuItem;
         private ToolStripMenuItem DoCancleToolTip;
         private ToolStripMenuItem CutTextToolTip;
         private ToolStripMenuItem CopyTextToolTip;

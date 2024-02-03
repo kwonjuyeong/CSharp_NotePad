@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic;
+using System.Drawing.Printing;
 
 namespace MyTextEditor
 {
@@ -39,8 +40,6 @@ namespace MyTextEditor
             currentFilePath = string.Empty;
             isTextChanged = false;
         }
-
-       
 
         //새창(Ctrl+Shift+N)
         private void NewMemoToolTip_Click(object sender, EventArgs e)
@@ -90,6 +89,14 @@ namespace MyTextEditor
         //다른 이름으로 저장(Ctrl+Shift+S)
         private void DnameSaveToolTip_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "텍스트 파일 (*.txt)|*.txt|모든 파일 (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentFilePath = saveFileDialog.FileName;
+                SaveFile();
+            }
 
         }
 
@@ -103,6 +110,15 @@ namespace MyTextEditor
         //인쇄(Ctrl+P)
         private void PrintToolTip_Click(object sender, EventArgs e)
         {
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = new PrintDocument();
+
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                printDialog.Document.PrintPage += new PrintPageEventHandler(PrintDocument_PrintPage);
+                printDialog.Document.Print();
+            }
+
         }
         #endregion
 
@@ -163,6 +179,14 @@ namespace MyTextEditor
         {
             isTextChanged = true;
         }
+
+
+        // 프린트할 때 호출되는 이벤트 핸들러
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font font = new Font("Arial", 12);
+            e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
+        }
         #endregion
 
 
@@ -170,6 +194,6 @@ namespace MyTextEditor
 
 
 
-        
+
     }
 }
