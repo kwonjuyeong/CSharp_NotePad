@@ -87,7 +87,6 @@ namespace MyTextEditor
             SaveFile();
         }
 
-
         //다른 이름으로 저장(Ctrl+Shift+S)
         private void DnameSaveToolTip_Click(object sender, EventArgs e)
         {
@@ -107,7 +106,6 @@ namespace MyTextEditor
         {
 
         }
-
 
         //인쇄(Ctrl+P)
         private void PrintToolTip_Click(object sender, EventArgs e)
@@ -144,13 +142,65 @@ namespace MyTextEditor
 
             //폼 닫기
             Close();
-
         }
         #endregion
 
 
 
         #region 편집
+
+        //복사(Ctrl+C)
+        private void CopyTextToolTip_Click(object sender, EventArgs e)
+        {
+            if (MyTextArea.SelectionLength > 0)
+            {
+                MyTextArea.Copy();
+            }
+
+        }
+        //붙여넣기(Ctrl+V)
+
+        private void PasteTextToolTip_Click(object sender, EventArgs e)
+        {
+            MyTextArea.Paste();
+        }
+        //자르기(Ctrl+X)
+
+        private void CutTextToolTip_Click(object sender, EventArgs e)
+        {
+            if (MyTextArea.SelectionLength > 0)
+            {
+                MyTextArea.Cut();
+            }
+        }
+        //실행 취소(Ctrl+Z)
+
+        private void DoCancleToolTip_Click(object sender, EventArgs e)
+        {
+            if (MyTextArea.CanUndo)
+            {
+                MyTextArea.Undo();
+            }
+        }
+
+        //실행 복구(Ctrl+Y)
+        private void RedoToolTip_Click(object sender, EventArgs e)
+        {
+            if (MyTextArea.CanRedo)
+            {
+                MyTextArea.Redo();
+            }
+        }
+
+        //삭제(Delete)
+        private void DeleteTextToolTip_Click(object sender, EventArgs e)
+        {
+            if (MyTextArea.SelectionLength > 0)
+            {
+                MyTextArea.SelectedText = string.Empty;
+            }
+        }
+
         //시간 입력(F5)
         private void TimeTextToolTip_Click(object sender, EventArgs e)
         {
@@ -161,11 +211,10 @@ namespace MyTextEditor
             MyTextArea.SelectionLength = 0;
             MyTextArea.Focus();
         }
-
         #endregion
 
 
-        #region 메소드들
+        #region 메소드
         // 파일 저장 메소드
         private void SaveFile()
         {
@@ -213,25 +262,22 @@ namespace MyTextEditor
             this.Text = isTextChanged ? $"*{fileName}" : fileName;
         }
 
-
         // 프린트할 때 호출되는 이벤트 핸들러
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             Font font = new Font("Arial", 12);
             e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
         }
-        #endregion
-
 
         private void 메모장_FormClosing(object sender, FormClosingEventArgs e)
         {
-    
-        // 모든 폼이 닫히면 프로그램 종료
-        if (Application.OpenForms.Count == 1)
-        {
-            Application.Exit();
+            // 모든 폼이 닫히면 프로그램 종료
+            if (Application.OpenForms.Count == 1)
+            {
+                Application.Exit();
+            }
         }
-            
-        }
+        #endregion
+        
     }
 }
