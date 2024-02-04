@@ -159,6 +159,7 @@
             ExitToolTip.Name = "ExitToolTip";
             ExitToolTip.Size = new Size(252, 22);
             ExitToolTip.Text = "끝내기";
+            ExitToolTip.Click += ExitToolTip_Click;
             // 
             // 편집EToolStripMenuItem
             // 
@@ -349,7 +350,8 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "메모장";
-            Text = "Form1";
+            Text = "제목없음 - 내가만든메모장";
+            FormClosing += 메모장_FormClosing;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();

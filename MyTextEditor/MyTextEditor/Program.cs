@@ -10,8 +10,9 @@ namespace MyTextEditor
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new 메모장());
+
+            (new 메모장()).Show();
+            Application.Run();
         }
     }
 }

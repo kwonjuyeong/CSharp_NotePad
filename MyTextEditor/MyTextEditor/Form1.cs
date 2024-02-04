@@ -44,8 +44,9 @@ namespace MyTextEditor
         //새창(Ctrl+Shift+N)
         private void NewMemoToolTip_Click(object sender, EventArgs e)
         {
-            // 새 창을 만들기 위해 Form1의 복사본을 생성
+            // 새 창을 만들기 위해 메모장의 복사본을 생성
             메모장 newMemo = new 메모장();
+            // 새 창을 보여줌
             newMemo.Show();
         }
 
@@ -76,6 +77,7 @@ namespace MyTextEditor
                 currentFilePath = openFileDialog.FileName;
                 MyTextArea.Text = File.ReadAllText(currentFilePath);
                 isTextChanged = false;
+                UpdateFormTitle();
             }
         }
 
@@ -120,9 +122,31 @@ namespace MyTextEditor
             }
 
         }
+
+        //끝내기
+        private void ExitToolTip_Click(object sender, EventArgs e)
+        {
+            if (isTextChanged)
+            {
+                DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    // 저장
+                    SaveFile();
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    // 취소
+                    return;
+                }
+            }
+
+            //폼 닫기
+            Close();
+
+        }
         #endregion
-
-
 
 
 
@@ -142,7 +166,7 @@ namespace MyTextEditor
 
 
         #region 메소드들
-        // 실제 파일 저장 로직
+        // 파일 저장 메소드
         private void SaveFile()
         {
             if (string.IsNullOrEmpty(currentFilePath))
@@ -167,6 +191,7 @@ namespace MyTextEditor
                 // 텍스트 에디터의 내용을 파일에 저장
                 File.WriteAllText(currentFilePath, MyTextArea.Text);
                 isTextChanged = false; // 저장 후 변경되지 않은 상태로 표시
+                UpdateFormTitle(); // 저장 후 파일 이름 표시 갱신
             }
             catch (Exception ex)
             {
@@ -174,10 +199,18 @@ namespace MyTextEditor
             }
         }
 
-        // 텍스트 에디터 내용 변경 여부 확인
+        // 텍스트 변경 여부 확인 메소드
         private void MyTextArea_TextChanged(object sender, EventArgs e)
         {
             isTextChanged = true;
+            UpdateFormTitle();
+        }
+
+        //파일 이름 변경 메소드
+        private void UpdateFormTitle()
+        {
+            string fileName = string.IsNullOrEmpty(currentFilePath) ? "제목 없음" : Path.GetFileName(currentFilePath);
+            this.Text = isTextChanged ? $"*{fileName}" : fileName;
         }
 
 
@@ -190,10 +223,15 @@ namespace MyTextEditor
         #endregion
 
 
-
-
-
-
-
+        private void 메모장_FormClosing(object sender, FormClosingEventArgs e)
+        {
+    
+        // 모든 폼이 닫히면 프로그램 종료
+        if (Application.OpenForms.Count == 1)
+        {
+            Application.Exit();
+        }
+            
+        }
     }
 }
