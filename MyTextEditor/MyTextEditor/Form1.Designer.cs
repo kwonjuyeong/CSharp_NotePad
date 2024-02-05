@@ -43,6 +43,7 @@
             ExitToolTip = new ToolStripMenuItem();
             편집EToolStripMenuItem = new ToolStripMenuItem();
             UndoToolTip = new ToolStripMenuItem();
+            RedoToolTip = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             CutTextToolTip = new ToolStripMenuItem();
             CopyTextToolTip = new ToolStripMenuItem();
@@ -69,7 +70,6 @@
             도움말HToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
             MyTextArea = new RichTextBox();
-            RedoToolTip = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             SuspendLayout();
@@ -173,20 +173,28 @@
             // 
             UndoToolTip.Name = "UndoToolTip";
             UndoToolTip.ShortcutKeys = Keys.Control | Keys.Z;
-            UndoToolTip.Size = new Size(180, 22);
+            UndoToolTip.Size = new Size(179, 22);
             UndoToolTip.Text = "실행 취소";
             UndoToolTip.Click += DoCancleToolTip_Click;
+            // 
+            // RedoToolTip
+            // 
+            RedoToolTip.Name = "RedoToolTip";
+            RedoToolTip.ShortcutKeys = Keys.Control | Keys.Y;
+            RedoToolTip.Size = new Size(179, 22);
+            RedoToolTip.Text = "실행 복구";
+            RedoToolTip.Click += RedoToolTip_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(177, 6);
+            toolStripSeparator3.Size = new Size(176, 6);
             // 
             // CutTextToolTip
             // 
             CutTextToolTip.Name = "CutTextToolTip";
             CutTextToolTip.ShortcutKeys = Keys.Control | Keys.X;
-            CutTextToolTip.Size = new Size(180, 22);
+            CutTextToolTip.Size = new Size(179, 22);
             CutTextToolTip.Text = "잘라내기";
             CutTextToolTip.Click += CutTextToolTip_Click;
             // 
@@ -194,7 +202,7 @@
             // 
             CopyTextToolTip.Name = "CopyTextToolTip";
             CopyTextToolTip.ShortcutKeys = Keys.Control | Keys.C;
-            CopyTextToolTip.Size = new Size(180, 22);
+            CopyTextToolTip.Size = new Size(179, 22);
             CopyTextToolTip.Text = "복사";
             CopyTextToolTip.Click += CopyTextToolTip_Click;
             // 
@@ -202,7 +210,7 @@
             // 
             PasteTextToolTip.Name = "PasteTextToolTip";
             PasteTextToolTip.ShortcutKeys = Keys.Control | Keys.V;
-            PasteTextToolTip.Size = new Size(180, 22);
+            PasteTextToolTip.Size = new Size(179, 22);
             PasteTextToolTip.Text = "붙여넣기";
             PasteTextToolTip.Click += PasteTextToolTip_Click;
             // 
@@ -210,67 +218,73 @@
             // 
             DeleteTextToolTip.Name = "DeleteTextToolTip";
             DeleteTextToolTip.ShortcutKeys = Keys.Delete;
-            DeleteTextToolTip.Size = new Size(180, 22);
+            DeleteTextToolTip.Size = new Size(179, 22);
             DeleteTextToolTip.Text = "삭제";
             DeleteTextToolTip.Click += DeleteTextToolTip_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(177, 6);
+            toolStripSeparator4.Size = new Size(176, 6);
             // 
             // FindTextToolTip
             // 
             FindTextToolTip.Name = "FindTextToolTip";
             FindTextToolTip.ShortcutKeys = Keys.Control | Keys.F;
-            FindTextToolTip.Size = new Size(180, 22);
+            FindTextToolTip.Size = new Size(179, 22);
             FindTextToolTip.Text = "찾기";
+            FindTextToolTip.Click += FindTextToolTip_Click;
             // 
             // FindNextToolTip
             // 
             FindNextToolTip.Name = "FindNextToolTip";
             FindNextToolTip.ShortcutKeys = Keys.F3;
-            FindNextToolTip.Size = new Size(180, 22);
+            FindNextToolTip.Size = new Size(179, 22);
             FindNextToolTip.Text = "다음 찾기";
+            FindNextToolTip.Click += FindNextToolTip_Click;
             // 
             // FindBeforeToolTip
             // 
             FindBeforeToolTip.Name = "FindBeforeToolTip";
             FindBeforeToolTip.ShortcutKeys = Keys.Shift | Keys.F3;
-            FindBeforeToolTip.Size = new Size(180, 22);
+            FindBeforeToolTip.Size = new Size(179, 22);
             FindBeforeToolTip.Text = "이전 찾기";
+            FindBeforeToolTip.Click += FindBeforeToolTip_Click;
             // 
             // ChangeTextToolTip
             // 
             ChangeTextToolTip.Name = "ChangeTextToolTip";
             ChangeTextToolTip.ShortcutKeys = Keys.Control | Keys.H;
-            ChangeTextToolTip.Size = new Size(180, 22);
+            ChangeTextToolTip.Size = new Size(179, 22);
             ChangeTextToolTip.Text = "바꾸기";
+            ChangeTextToolTip.Click += ChangeTextToolTip_Click;
             // 
             // MoveTextToolTip
             // 
             MoveTextToolTip.Name = "MoveTextToolTip";
             MoveTextToolTip.ShortcutKeys = Keys.Control | Keys.G;
-            MoveTextToolTip.Size = new Size(180, 22);
+            MoveTextToolTip.Size = new Size(179, 22);
             MoveTextToolTip.Text = "이동";
+            MoveTextToolTip.Click += MoveTextToolTip_Click;
             // 
             // toolStripSeparator5
             // 
             toolStripSeparator5.Name = "toolStripSeparator5";
-            toolStripSeparator5.Size = new Size(177, 6);
+            toolStripSeparator5.Size = new Size(176, 6);
             // 
             // AllSelectTextToolTip
             // 
             AllSelectTextToolTip.Name = "AllSelectTextToolTip";
             AllSelectTextToolTip.ShortcutKeys = Keys.Control | Keys.A;
-            AllSelectTextToolTip.Size = new Size(180, 22);
+            AllSelectTextToolTip.Size = new Size(179, 22);
             AllSelectTextToolTip.Text = "모두 선택";
+            AllSelectTextToolTip.Click += AllSelectTextToolTip_Click;
             // 
             // TimeTextToolTip
             // 
             TimeTextToolTip.Name = "TimeTextToolTip";
             TimeTextToolTip.ShortcutKeys = Keys.F5;
-            TimeTextToolTip.Size = new Size(180, 22);
+            TimeTextToolTip.Size = new Size(179, 22);
             TimeTextToolTip.Text = "시간/날짜";
             TimeTextToolTip.Click += TimeTextToolTip_Click;
             // 
@@ -346,14 +360,6 @@
             MyTextArea.TabIndex = 1;
             MyTextArea.Text = "";
             MyTextArea.TextChanged += MyTextArea_TextChanged;
-            // 
-            // RedoToolTip
-            // 
-            RedoToolTip.Name = "RedoToolTip";
-            RedoToolTip.ShortcutKeys = Keys.Control | Keys.Y;
-            RedoToolTip.Size = new Size(180, 22);
-            RedoToolTip.Text = "실행 복구";
-            RedoToolTip.Click += RedoToolTip_Click;
             // 
             // 메모장
             // 

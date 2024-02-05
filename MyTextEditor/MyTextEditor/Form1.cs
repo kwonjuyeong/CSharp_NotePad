@@ -5,7 +5,7 @@ namespace MyTextEditor
 {
     public partial class 메모장 : Form
     {
-
+        private FindDialog findDialog;
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
 
@@ -14,7 +14,7 @@ namespace MyTextEditor
             InitializeComponent();
         }
 
-        #region 파일
+        #region 파일 메뉴
         // 새 파일(Ctrl+N)
         private void NewFileToolTip_Click(object sender, EventArgs e)
         {
@@ -78,6 +78,7 @@ namespace MyTextEditor
                 MyTextArea.Text = File.ReadAllText(currentFilePath);
                 isTextChanged = false;
                 UpdateFormTitle();
+                ControlFocusBack();
             }
         }
 
@@ -147,8 +148,8 @@ namespace MyTextEditor
 
 
 
-        #region 편집
 
+        #region 편집
         //복사(Ctrl+C)
         private void CopyTextToolTip_Click(object sender, EventArgs e)
         {
@@ -158,14 +159,14 @@ namespace MyTextEditor
             }
 
         }
-        //붙여넣기(Ctrl+V)
 
+        //붙여넣기(Ctrl+V)
         private void PasteTextToolTip_Click(object sender, EventArgs e)
         {
             MyTextArea.Paste();
         }
-        //자르기(Ctrl+X)
 
+        //자르기(Ctrl+X)
         private void CutTextToolTip_Click(object sender, EventArgs e)
         {
             if (MyTextArea.SelectionLength > 0)
@@ -173,8 +174,8 @@ namespace MyTextEditor
                 MyTextArea.Cut();
             }
         }
-        //실행 취소(Ctrl+Z)
 
+        //실행 취소(Ctrl+Z)
         private void DoCancleToolTip_Click(object sender, EventArgs e)
         {
             if (MyTextArea.CanUndo)
@@ -201,15 +202,89 @@ namespace MyTextEditor
             }
         }
 
+        //찾기(Ctrl+F)
+        private void FindTextToolTip_Click(object sender, EventArgs e)
+        {
+            ShowFindDialog();
+        }
+
+        private void ShowFindDialog()
+        {
+            if (findDialog == null || findDialog.IsDisposed)
+            {
+                findDialog = new FindDialog(MyTextArea);
+                findDialog.FindNextEvent += FindDialog_FindNextEvent;
+                findDialog.Show();
+            }
+            else
+            {
+                findDialog.BringToFront();
+            }
+        }
+
+        private void FindDialog_FindNextEvent(object sender, EventArgs e)
+        {
+            // FindDialog에서 발생한 이벤트를 처리
+            FindNext();
+        }
+
+        private void FindNext()
+        {
+            if (findDialog != null)
+            {
+                int startIndex = MyTextArea.SelectionStart + MyTextArea.SelectionLength;
+
+                int index = MyTextArea.Text.IndexOf(findDialog.SearchText, startIndex, StringComparison.CurrentCultureIgnoreCase);
+
+                if (index != -1)
+                {
+                    MyTextArea.Select(index, findDialog.SearchText.Length);
+                    MyTextArea.ScrollToCaret();
+                }
+                else
+                {
+                    MessageBox.Show("더 이상 찾을 문자열이 없습니다.", "찾기 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+
+
+        //다음 찾기(F3)
+        private void FindNextToolTip_Click(object sender, EventArgs e)
+        {
+        }
+
+        //이전 찾기(SHIFT+F3)
+        private void FindBeforeToolTip_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //바꾸기(Ctrl+H)
+        private void ChangeTextToolTip_Click(object sender, EventArgs e)
+        {
+        }
+
+
+        //이동(Ctrl+G)
+        private void MoveTextToolTip_Click(object sender, EventArgs e)
+        {
+        }
+
+        //모두 선택(Ctrl+A)
+        private void AllSelectTextToolTip_Click(object sender, EventArgs e)
+        {
+            MyTextArea.SelectAll();
+        }
+
+
         //시간 입력(F5)
         private void TimeTextToolTip_Click(object sender, EventArgs e)
         {
             //현재 시간 추가
             MyTextArea.Text += DateTime.Now.ToString();
-            //커서 맨 뒤로 이동
-            MyTextArea.SelectionStart = MyTextArea.Text.Length;
-            MyTextArea.SelectionLength = 0;
-            MyTextArea.Focus();
+            ControlFocusBack();
         }
         #endregion
 
@@ -269,6 +344,16 @@ namespace MyTextEditor
             e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
         }
 
+        //커서 위치 이동(맨 뒤)
+        private void ControlFocusBack()
+        {
+            //커서 맨 뒤로 이동
+            MyTextArea.SelectionStart = MyTextArea.Text.Length;
+            MyTextArea.SelectionLength = 0;
+            MyTextArea.Focus();
+        }
+
+
         private void 메모장_FormClosing(object sender, FormClosingEventArgs e)
         {
             // 모든 폼이 닫히면 프로그램 종료
@@ -278,6 +363,84 @@ namespace MyTextEditor
             }
         }
         #endregion
-        
+
     }
+
+
+    public class FindDialog : Form
+    {
+        private Label findLabel;
+        private RichTextBox textBoxToSearch;
+        private Button findNextButton;
+        private Button cancleButton;
+        private 
+
+        public event EventHandler FindNextEvent;
+
+        public string SearchText => textBoxToSearch.Text;
+
+        public FindDialog(RichTextBox richtextBox)
+        {
+            textBoxToSearch = richtextBox;
+            InitializeUI();
+        }
+
+        private void InitializeUI()
+        {
+            findLabel = new Label();
+            textBoxToSearch = new RichTextBox();
+            findNextButton = new Button();
+            cancleButton = new Button();
+
+            this.Text = "찾기";
+            this.Width = 400;
+            this.Height = 200;
+
+            findLabel.Text = "찾을 내용(N) :";
+            findLabel.Location = new Point(10, 25);
+            findLabel.AutoSize = true;
+
+
+            //찾을 내용 TextBox
+            textBoxToSearch.Height = 25;
+            textBoxToSearch.Width = 200;
+            textBoxToSearch.Location = new Point(80, 20);
+
+
+            //다음 찾기 버튼 UI
+            findNextButton.Text = "다음 찾기(F)";
+            findNextButton.Height = 25;
+            findNextButton.Width = 80;
+            findNextButton.Location = new Point(290, 20);
+
+            cancleButton.Text = "취소";
+            cancleButton.Height = 25;
+            cancleButton.Width = 80;
+            cancleButton.Location = new Point(290, 60);
+            
+
+            // Add controls to the form
+            Controls.Add(findLabel);
+            Controls.Add(textBoxToSearch);
+            Controls.Add(findNextButton);
+            Controls.Add(cancleButton);
+
+            // findNextButton 클릭 이벤트 등록
+            findNextButton.Click += FindNextButton_Click;
+        }
+
+        private void FindNextButton_Click(object sender, EventArgs e)
+        {
+            FindNextEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+    }
+
+
+
 }
+
+
+
+
+
