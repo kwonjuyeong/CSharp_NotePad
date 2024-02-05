@@ -373,16 +373,25 @@ namespace MyTextEditor
         private RichTextBox textBoxToSearch;
         private Button findNextButton;
         private Button cancleButton;
-        private 
+        private CheckBox caseSensitiveCheckBox;
+        private CheckBox roundCheckBox;
+        private RadioButton forwardRadioButton;
+        private RadioButton backwardRadioButton;
+
 
         public event EventHandler FindNextEvent;
 
         public string SearchText => textBoxToSearch.Text;
+        public bool CaseSensitive => caseSensitiveCheckBox.Checked;
+        public bool SearchForward => forwardRadioButton.Checked;
 
         public FindDialog(RichTextBox richtextBox)
         {
             textBoxToSearch = richtextBox;
             InitializeUI();
+            this.Text = "찾기";
+            this.Width = 430;
+            this.Height = 180;
         }
 
         private void InitializeUI()
@@ -391,47 +400,79 @@ namespace MyTextEditor
             textBoxToSearch = new RichTextBox();
             findNextButton = new Button();
             cancleButton = new Button();
+            caseSensitiveCheckBox = new CheckBox();
+            forwardRadioButton = new RadioButton();
+            backwardRadioButton = new RadioButton();
+            roundCheckBox = new CheckBox();
 
-            this.Text = "찾기";
-            this.Width = 400;
-            this.Height = 200;
-
+            //라벨
             findLabel.Text = "찾을 내용(N) :";
             findLabel.Location = new Point(10, 25);
             findLabel.AutoSize = true;
 
-
             //찾을 내용 TextBox
             textBoxToSearch.Height = 25;
             textBoxToSearch.Width = 200;
-            textBoxToSearch.Location = new Point(80, 20);
+            textBoxToSearch.Location = new Point(100, 20);
 
 
             //다음 찾기 버튼 UI
             findNextButton.Text = "다음 찾기(F)";
             findNextButton.Height = 25;
             findNextButton.Width = 80;
-            findNextButton.Location = new Point(290, 20);
+            findNextButton.Location = new Point(310, 20);
+            findNextButton.Click += FindNextButton_Click;
 
+            //취소 버튼 UI
             cancleButton.Text = "취소";
             cancleButton.Height = 25;
             cancleButton.Width = 80;
-            cancleButton.Location = new Point(290, 60);
-            
+            cancleButton.Location = new Point(310, 60);
+            cancleButton.Click += CancelButton_Click;
+
+            //대/소문자 구분 UI
+            caseSensitiveCheckBox.Text = "대/소문자 구분(C)";
+            caseSensitiveCheckBox.Location = new Point(10, 60);
+            caseSensitiveCheckBox.AutoSize = true;
+
+
+            // 찾기 방향 라디오 버튼
+            forwardRadioButton.Text = "위로(U)";
+            forwardRadioButton.Location = new Point(150, 60);
+            forwardRadioButton.Checked = false;
+            forwardRadioButton.AutoSize = true;
+
+            backwardRadioButton.Text = "아래로(D)";
+            backwardRadioButton.Location = new Point(220, 60);
+            backwardRadioButton.Checked = true;
+            backwardRadioButton.AutoSize = true;
+
+            //주위에 배치(R)
+            roundCheckBox.Text = "주위에 배치(R)";
+            roundCheckBox.Location = new Point(10, 90);
+            roundCheckBox.AutoSize = true;
+
 
             // Add controls to the form
             Controls.Add(findLabel);
             Controls.Add(textBoxToSearch);
             Controls.Add(findNextButton);
             Controls.Add(cancleButton);
-
-            // findNextButton 클릭 이벤트 등록
-            findNextButton.Click += FindNextButton_Click;
+            Controls.Add(caseSensitiveCheckBox);
+            Controls.Add(forwardRadioButton);
+            Controls.Add(backwardRadioButton);
+            Controls.Add(roundCheckBox);
         }
 
         private void FindNextButton_Click(object sender, EventArgs e)
         {
             FindNextEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            // 취소 버튼 클릭 시 폼 닫기
+            this.Close();
         }
 
     }
