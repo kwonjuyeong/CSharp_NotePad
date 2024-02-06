@@ -6,8 +6,10 @@ namespace MyTextEditor
     public partial class 메모장 : Form
     {
         private FindDialog findDialog;
+        private MoveDialog moveDialog;
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
+
 
         public 메모장()
         {
@@ -185,10 +187,11 @@ namespace MyTextEditor
             }
         }
 
+
         //찾기(Ctrl+F)
         private void FindTextToolTip_Click(object sender, EventArgs e)
         {
-            ShowFindDialog();
+            ShowDialogs("find");
         }
 
         //다음 찾기(F3)
@@ -199,8 +202,11 @@ namespace MyTextEditor
         //이전 찾기(SHIFT+F3)
         private void FindBeforeToolTip_Click(object sender, EventArgs e)
         {
-
         }
+
+
+       
+
 
         //바꾸기(Ctrl+H)
         private void ChangeTextToolTip_Click(object sender, EventArgs e)
@@ -211,22 +217,7 @@ namespace MyTextEditor
         //이동(Ctrl+G)
         private void MoveTextToolTip_Click(object sender, EventArgs e)
         {
-        }
-
-
-
-        // 찾기 다이얼로그 표시
-        private void ShowFindDialog()
-        {
-            if (findDialog == null || findDialog.IsDisposed)
-            {
-                findDialog = new FindDialog(MyTextArea);
-                findDialog.Show();
-            }
-            else
-            {
-                findDialog.BringToFront();
-            }
+            ShowDialogs("move");
         }
 
         //모두 선택(Ctrl+A)
@@ -336,11 +327,69 @@ namespace MyTextEditor
         }
 
 
+        // 찾기 다이얼로그 표시
+        private void ShowDialogs(string spec)
+        {
+            if (spec == "find")
+            {
+                if (findDialog == null || findDialog.IsDisposed)
+                {
+                    findDialog = new FindDialog(MyTextArea);
+                    //findDialog.Show();
+                    findDialog.Show(this);
+                }
+                else
+                {
+                    findDialog.BringToFront();
+                }
+            }
+            else if (spec == "move")
+            {
+                if (moveDialog == null || moveDialog.IsDisposed)
+                {
+                    moveDialog = new MoveDialog(MyTextArea);
+                    moveDialog.MoveEvent += MoveDialog_MoveEvent;
+                    moveDialog.Show(this);
+                }
+                else
+                {
+                    moveDialog.BringToFront();
+                }
+
+            }
+        }
+
+
+        // 줄 이동 이벤트 핸들러
+        private void MoveDialog_MoveEvent(object sender, EventArgs e)
+        {
+            // MoveDialog에서 줄 이동 버튼을 클릭하면 호출되는 이벤트 핸들러
+            MoveDialog moveDialog = sender as MoveDialog;
+            if (moveDialog != null)
+            {
+                // 줄 이동 처리
+                int targetLine = moveDialog.TargetLine;
+                if (targetLine >= 1 && targetLine <= MyTextArea.Lines.Length)
+                {
+                    // 해당 줄로 커서 이동
+                    MyTextArea.SelectionStart = MyTextArea.GetFirstCharIndexFromLine(targetLine - 1);
+                    MyTextArea.ScrollToCaret();
+                    MyTextArea.Focus();
+                    moveDialog.Close();
+                }
+                else
+                {
+                    // 유효하지 않은 줄 번호일 경우 메시지 표시
+                    MessageBox.Show("유효하지 않은 줄 번호입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        #endregion
 
 
         private void 메모장_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isTextChanged)
+            if (isTextChanged && MyTextArea.Text.Length > 0)
             {
                 DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
@@ -354,15 +403,17 @@ namespace MyTextEditor
                 }
             }
 
-            // 찾기 다이얼로그가 열려있는 경우 닫기
+            //다이얼로그가 열려있는 경우 닫기
             if (findDialog != null && !findDialog.IsDisposed)
             {
                 findDialog.Close();
             }
+            else if (moveDialog != null && !moveDialog.IsDisposed)
+            {
+                moveDialog.Close();
+            }
+
         }
-
-
-        #endregion
 
         private void 메모장_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -371,11 +422,12 @@ namespace MyTextEditor
             {     
                 Application.Exit();
             }
-
         }
+
     }
 
 
+    //찾기 폼
     public class FindDialog : Form
     {
         private Label findLabel;
@@ -387,6 +439,8 @@ namespace MyTextEditor
         private GroupBox directionGroupBox;
         private RadioButton forwardRadioButton;
         private RadioButton backwardRadioButton;
+
+        
 
         public event EventHandler FindNextEvent;
 
@@ -463,6 +517,7 @@ namespace MyTextEditor
 
             backwardRadioButton.Text = "아래로(D)";
             backwardRadioButton.Location = new Point(80, 20);
+            backwardRadioButton.Checked = true;
             backwardRadioButton.AutoSize = true;
 
            
@@ -483,6 +538,80 @@ namespace MyTextEditor
         private void FindNextButton_Click(object sender, EventArgs e)
         {
             FindNextEvent?.Invoke(this, EventArgs.Empty);
+
+
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            // 취소 버튼 클릭 시 폼 닫기
+            this.Close();
+        }
+    }
+
+    //이동 폼
+    public class MoveDialog : Form
+    {
+        private Label findLabel;
+        private RichTextBox textBoxToMove;
+        private Button moveButton;
+        private Button cancleButton;
+
+        public event EventHandler MoveEvent;
+        public int TargetLine => int.Parse(textBoxToMove.Text);
+        public string MoveText => textBoxToMove.Text;
+        
+        public MoveDialog(RichTextBox richtextBox)
+        {
+            textBoxToMove = richtextBox;
+            InitializeUI();
+            this.Text = "줄 이동";
+            this.Width = 270;
+            this.Height = 160;
+        }
+
+        private void InitializeUI()
+        {
+            findLabel = new Label();
+            textBoxToMove = new RichTextBox();
+            moveButton = new Button();
+            cancleButton = new Button();
+
+            //라벨
+            findLabel.Text = "줄 번호(L) :";
+            findLabel.Location = new Point(10, 10);
+            findLabel.AutoSize = true;
+
+            //찾을 내용 TextBox
+            textBoxToMove.Height = 30;
+            textBoxToMove.Width = 230;
+            textBoxToMove.Location = new Point(10, 40);
+            textBoxToMove.KeyPress += TextBoxToMove_KeyPress;
+
+            //이동 버튼
+            moveButton.Text = "이동";
+            moveButton.Height = 25;
+            moveButton.Width = 70;
+            moveButton.Location = new Point(90, 80);
+            moveButton.Click += MoveButton_Click;
+
+            //취소 버튼
+            cancleButton.Text = "취소";
+            cancleButton.Height = 25;
+            cancleButton.Width = 70;
+            cancleButton.Location = new Point(170, 80);
+            cancleButton.Click += CancelButton_Click;
+
+            // Add controls to the form
+            Controls.Add(findLabel);
+            Controls.Add(textBoxToMove);
+            Controls.Add(moveButton);
+            Controls.Add(cancleButton);
+        }
+
+        private void MoveButton_Click(object sender, EventArgs e)
+        {
+            MoveEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -491,9 +620,16 @@ namespace MyTextEditor
             this.Close();
         }
 
+        // TextBox 입력 제한 - 숫자만 입력 가능하도록
+        private void TextBoxToMove_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
     }
-
-
 
 }
 
