@@ -79,7 +79,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, 편집EToolStripMenuItem, 서식OToolStripMenuItem, 보기VToolStripMenuItem, 도움말HToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.Size = new Size(855, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -192,6 +192,7 @@
             // 
             // CutTextToolTip
             // 
+            CutTextToolTip.Enabled = false;
             CutTextToolTip.Name = "CutTextToolTip";
             CutTextToolTip.ShortcutKeys = Keys.Control | Keys.X;
             CutTextToolTip.Size = new Size(179, 22);
@@ -200,6 +201,7 @@
             // 
             // CopyTextToolTip
             // 
+            CopyTextToolTip.Enabled = false;
             CopyTextToolTip.Name = "CopyTextToolTip";
             CopyTextToolTip.ShortcutKeys = Keys.Control | Keys.C;
             CopyTextToolTip.Size = new Size(179, 22);
@@ -216,6 +218,7 @@
             // 
             // DeleteTextToolTip
             // 
+            DeleteTextToolTip.Enabled = false;
             DeleteTextToolTip.Name = "DeleteTextToolTip";
             DeleteTextToolTip.ShortcutKeys = Keys.Delete;
             DeleteTextToolTip.Size = new Size(179, 22);
@@ -229,6 +232,7 @@
             // 
             // FindTextToolTip
             // 
+            FindTextToolTip.Enabled = false;
             FindTextToolTip.Name = "FindTextToolTip";
             FindTextToolTip.ShortcutKeys = Keys.Control | Keys.F;
             FindTextToolTip.Size = new Size(179, 22);
@@ -237,6 +241,7 @@
             // 
             // FindNextToolTip
             // 
+            FindNextToolTip.Enabled = false;
             FindNextToolTip.Name = "FindNextToolTip";
             FindNextToolTip.ShortcutKeys = Keys.F3;
             FindNextToolTip.Size = new Size(179, 22);
@@ -245,6 +250,7 @@
             // 
             // FindBeforeToolTip
             // 
+            FindBeforeToolTip.Enabled = false;
             FindBeforeToolTip.Name = "FindBeforeToolTip";
             FindBeforeToolTip.ShortcutKeys = Keys.Shift | Keys.F3;
             FindBeforeToolTip.Size = new Size(179, 22);
@@ -356,16 +362,17 @@
             MyTextArea.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             MyTextArea.Location = new Point(0, 27);
             MyTextArea.Name = "MyTextArea";
-            MyTextArea.Size = new Size(800, 423);
+            MyTextArea.Size = new Size(855, 477);
             MyTextArea.TabIndex = 1;
             MyTextArea.Text = "";
+            MyTextArea.SelectionChanged += MyTextArea_SelectionChanged;
             MyTextArea.TextChanged += MyTextArea_TextChanged;
             // 
             // 메모장
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(855, 503);
             Controls.Add(MyTextArea);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;

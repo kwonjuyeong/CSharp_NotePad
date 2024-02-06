@@ -125,28 +125,44 @@ namespace MyTextEditor
         //끝내기
         private void ExitToolTip_Click(object sender, EventArgs e)
         {
+            ExitApplication();
+
+        }
+
+
+        // 애플리케이션 종료 메소드
+        private void ExitApplication()
+        {
             if (isTextChanged)
             {
                 DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    // 저장
                     SaveFile();
                 }
                 else if (result == DialogResult.Cancel)
                 {
-                    // 취소
                     return;
                 }
             }
 
-            //폼 닫기
-            Close();
+            // 현재 열려있는 폼이 없으면 프로그램 종료
+            if (Application.OpenForms.Count == 1)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                // 폼 닫기
+                this.Close();
+            }
         }
+
+
+
+
         #endregion
-
-
 
 
         #region 편집
@@ -205,50 +221,7 @@ namespace MyTextEditor
         //찾기(Ctrl+F)
         private void FindTextToolTip_Click(object sender, EventArgs e)
         {
-            ShowFindDialog();
         }
-
-        private void ShowFindDialog()
-        {
-            if (findDialog == null || findDialog.IsDisposed)
-            {
-                findDialog = new FindDialog(MyTextArea);
-                findDialog.FindNextEvent += FindDialog_FindNextEvent;
-                findDialog.Show();
-            }
-            else
-            {
-                findDialog.BringToFront();
-            }
-        }
-
-        private void FindDialog_FindNextEvent(object sender, EventArgs e)
-        {
-            // FindDialog에서 발생한 이벤트를 처리
-            FindNext();
-        }
-
-        private void FindNext()
-        {
-            if (findDialog != null)
-            {
-                int startIndex = MyTextArea.SelectionStart + MyTextArea.SelectionLength;
-
-                int index = MyTextArea.Text.IndexOf(findDialog.SearchText, startIndex, StringComparison.CurrentCultureIgnoreCase);
-
-                if (index != -1)
-                {
-                    MyTextArea.Select(index, findDialog.SearchText.Length);
-                    MyTextArea.ScrollToCaret();
-                }
-                else
-                {
-                    MessageBox.Show("더 이상 찾을 문자열이 없습니다.", "찾기 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
-
 
         //다음 찾기(F3)
         private void FindNextToolTip_Click(object sender, EventArgs e)
@@ -278,7 +251,6 @@ namespace MyTextEditor
             MyTextArea.SelectAll();
         }
 
-
         //시간 입력(F5)
         private void TimeTextToolTip_Click(object sender, EventArgs e)
         {
@@ -287,6 +259,7 @@ namespace MyTextEditor
             ControlFocusBack();
         }
         #endregion
+
 
 
         #region 메소드
@@ -323,11 +296,35 @@ namespace MyTextEditor
             }
         }
 
+
+
         // 텍스트 변경 여부 확인 메소드
         private void MyTextArea_TextChanged(object sender, EventArgs e)
         {
             isTextChanged = true;
             UpdateFormTitle();
+
+            if (MyTextArea.Text.Length > 0)
+            {
+                FindTextToolTip.Enabled = true;
+                FindNextToolTip.Enabled = true;
+                FindBeforeToolTip.Enabled = true;
+            }
+            else
+            {
+                FindTextToolTip.Enabled = false;
+                FindNextToolTip.Enabled = false;
+                FindBeforeToolTip.Enabled = false;
+            }
+        }
+
+        private void MyTextArea_SelectionChanged(object sender, EventArgs e)
+        {
+            // 텍스트가 선택되었는지 여부를 확인하여 메뉴의 활성화 여부를 설정
+            bool isTextSelected = MyTextArea.SelectionLength > 0;
+            CutTextToolTip.Enabled = isTextSelected;
+            CopyTextToolTip.Enabled = isTextSelected;
+            DeleteTextToolTip.Enabled = isTextSelected;
         }
 
         //파일 이름 변경 메소드
@@ -337,12 +334,7 @@ namespace MyTextEditor
             this.Text = isTextChanged ? $"*{fileName}" : fileName;
         }
 
-        // 프린트할 때 호출되는 이벤트 핸들러
-        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            Font font = new Font("Arial", 12);
-            e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
-        }
+
 
         //커서 위치 이동(맨 뒤)
         private void ControlFocusBack()
@@ -353,17 +345,40 @@ namespace MyTextEditor
             MyTextArea.Focus();
         }
 
+        // 프린트할 때 호출되는 이벤트 핸들러
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font font = new Font("Arial", 12);
+            e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
+        }
+
+
+
 
         private void 메모장_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // 모든 폼이 닫히면 프로그램 종료
+             if (isTextChanged)
+            {
+                DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    SaveFile();
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true; // 폼 닫기를 취소
+                    return;
+                }
+            }
+
+            // 폼이 정상적으로 종료될 때 현재 열려있는 폼이 없으면 프로그램 종료
             if (Application.OpenForms.Count == 1)
             {
                 Application.Exit();
             }
         }
         #endregion
-
     }
 
 
