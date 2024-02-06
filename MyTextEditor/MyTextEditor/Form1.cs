@@ -125,42 +125,9 @@ namespace MyTextEditor
         //끝내기
         private void ExitToolTip_Click(object sender, EventArgs e)
         {
-            ExitApplication();
-
+            // FormClosing 이벤트를 수동으로 호출하여 종료할 때의 동작을 수행
+            메모장_FormClosing(this, new FormClosingEventArgs(CloseReason.UserClosing, false));
         }
-
-
-        // 애플리케이션 종료 메소드
-        private void ExitApplication()
-        {
-            if (isTextChanged)
-            {
-                DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    SaveFile();
-                }
-                else if (result == DialogResult.Cancel)
-                {
-                    return;
-                }
-            }
-
-            // 현재 열려있는 폼이 없으면 프로그램 종료
-            if (Application.OpenForms.Count == 1)
-            {
-                Application.Exit();
-            }
-            else
-            {
-                // 폼 닫기
-                this.Close();
-            }
-        }
-
-
-
 
         #endregion
 
@@ -221,6 +188,7 @@ namespace MyTextEditor
         //찾기(Ctrl+F)
         private void FindTextToolTip_Click(object sender, EventArgs e)
         {
+            ShowFindDialog();
         }
 
         //다음 찾기(F3)
@@ -243,6 +211,22 @@ namespace MyTextEditor
         //이동(Ctrl+G)
         private void MoveTextToolTip_Click(object sender, EventArgs e)
         {
+        }
+
+
+
+        // 찾기 다이얼로그 표시
+        private void ShowFindDialog()
+        {
+            if (findDialog == null || findDialog.IsDisposed)
+            {
+                findDialog = new FindDialog(MyTextArea);
+                findDialog.Show();
+            }
+            else
+            {
+                findDialog.BringToFront();
+            }
         }
 
         //모두 선택(Ctrl+A)
@@ -335,7 +319,6 @@ namespace MyTextEditor
         }
 
 
-
         //커서 위치 이동(맨 뒤)
         private void ControlFocusBack()
         {
@@ -357,7 +340,7 @@ namespace MyTextEditor
 
         private void 메모장_FormClosing(object sender, FormClosingEventArgs e)
         {
-             if (isTextChanged)
+            if (isTextChanged)
             {
                 DialogResult result = MessageBox.Show("변경된 내용을 저장하시겠습니까?", "저장 확인", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
@@ -367,18 +350,29 @@ namespace MyTextEditor
                 }
                 else if (result == DialogResult.Cancel)
                 {
-                    e.Cancel = true; // 폼 닫기를 취소
-                    return;
+                    e.Cancel = true; // 취소 선택 시 창을 닫지 않음
                 }
             }
 
-            // 폼이 정상적으로 종료될 때 현재 열려있는 폼이 없으면 프로그램 종료
-            if (Application.OpenForms.Count == 1)
+            // 찾기 다이얼로그가 열려있는 경우 닫기
+            if (findDialog != null && !findDialog.IsDisposed)
             {
-                Application.Exit();
+                findDialog.Close();
             }
         }
+
+
         #endregion
+
+        private void 메모장_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // 현재 열려있는 폼이 없으면 프로그램 종료
+            if (Application.OpenForms.Count == 0)
+            {     
+                Application.Exit();
+            }
+
+        }
     }
 
 
@@ -390,9 +384,9 @@ namespace MyTextEditor
         private Button cancleButton;
         private CheckBox caseSensitiveCheckBox;
         private CheckBox roundCheckBox;
+        private GroupBox directionGroupBox;
         private RadioButton forwardRadioButton;
         private RadioButton backwardRadioButton;
-
 
         public event EventHandler FindNextEvent;
 
@@ -416,9 +410,10 @@ namespace MyTextEditor
             findNextButton = new Button();
             cancleButton = new Button();
             caseSensitiveCheckBox = new CheckBox();
+            roundCheckBox = new CheckBox();
+            directionGroupBox = new GroupBox();
             forwardRadioButton = new RadioButton();
             backwardRadioButton = new RadioButton();
-            roundCheckBox = new CheckBox();
 
             //라벨
             findLabel.Text = "찾을 내용(N) :";
@@ -450,23 +445,30 @@ namespace MyTextEditor
             caseSensitiveCheckBox.Location = new Point(10, 60);
             caseSensitiveCheckBox.AutoSize = true;
 
-
-            // 찾기 방향 라디오 버튼
-            forwardRadioButton.Text = "위로(U)";
-            forwardRadioButton.Location = new Point(150, 60);
-            forwardRadioButton.Checked = false;
-            forwardRadioButton.AutoSize = true;
-
-            backwardRadioButton.Text = "아래로(D)";
-            backwardRadioButton.Location = new Point(220, 60);
-            backwardRadioButton.Checked = true;
-            backwardRadioButton.AutoSize = true;
-
             //주위에 배치(R)
             roundCheckBox.Text = "주위에 배치(R)";
             roundCheckBox.Location = new Point(10, 90);
             roundCheckBox.AutoSize = true;
 
+
+            //찾기 방향
+            directionGroupBox.Text = "방향";
+            directionGroupBox.Location = new Point(140, 50);
+            directionGroupBox.Size = new Size(160, 60);
+
+            // 찾기 방향 라디오 버튼
+            forwardRadioButton.Text = "위로(U)";
+            forwardRadioButton.Location = new Point(10, 20);
+            forwardRadioButton.AutoSize = true;
+
+            backwardRadioButton.Text = "아래로(D)";
+            backwardRadioButton.Location = new Point(80, 20);
+            backwardRadioButton.AutoSize = true;
+
+           
+            // 방향 그룹박스에 라디오 버튼 추가
+            directionGroupBox.Controls.Add(forwardRadioButton);
+            directionGroupBox.Controls.Add(backwardRadioButton);
 
             // Add controls to the form
             Controls.Add(findLabel);
@@ -474,9 +476,8 @@ namespace MyTextEditor
             Controls.Add(findNextButton);
             Controls.Add(cancleButton);
             Controls.Add(caseSensitiveCheckBox);
-            Controls.Add(forwardRadioButton);
-            Controls.Add(backwardRadioButton);
             Controls.Add(roundCheckBox);
+            Controls.Add(directionGroupBox);
         }
 
         private void FindNextButton_Click(object sender, EventArgs e)
@@ -495,8 +496,4 @@ namespace MyTextEditor
 
 
 }
-
-
-
-
 

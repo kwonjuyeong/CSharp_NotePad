@@ -379,6 +379,7 @@
             Name = "메모장";
             Text = "제목없음 - 내가만든메모장";
             FormClosing += 메모장_FormClosing;
+            FormClosed += 메모장_FormClosed;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
