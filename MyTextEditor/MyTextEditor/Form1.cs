@@ -5,8 +5,8 @@ namespace MyTextEditor
 {
     public partial class 메모장 : Form
     {
-        private FindDialog findDialog;
-        private MoveDialog moveDialog;
+        private FindForm findDialog;
+        private LineMoveForm moveDialog;
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
         //private string searchTextForFindDialog = string.Empty;
@@ -79,8 +79,6 @@ namespace MyTextEditor
         }
         #endregion
 
-
-
         #region 2. 편집 메뉴
 
         //복사(Ctrl+C)
@@ -141,16 +139,23 @@ namespace MyTextEditor
             ShowDialogs("find");
         }
 
+
         //다음 찾기(F3)
         private void FindNextToolTip_Click(object sender, EventArgs e)
         {
-            FindDialog_NextEvent(sender, e);
+            if (findDialog != null)
+            {
+                findDialog.FindButton_Click(sender, e); // FindForm의 FindNextButton_Click 메소드 호출
+            }
         }
 
         //이전 찾기(SHIFT+F3)
         private void FindBeforeToolTip_Click(object sender, EventArgs e)
         {
-            FindDialog_PreviousEvent(sender, e);
+            if (findDialog != null)
+            {
+                findDialog.FindButton_Click(sender, e); // FindForm에 FindPreviousButton_Click 메소드 구현 후 호출
+            }
         }
 
         //바꾸기(Ctrl+H)
@@ -177,8 +182,6 @@ namespace MyTextEditor
             ControlFocusBack();
         }
         #endregion
-
-
 
         #region 메소드
         // 파일 저장 메소드
@@ -318,10 +321,7 @@ namespace MyTextEditor
             {
                 if (findDialog == null || findDialog.IsDisposed)
                 {
-                    findDialog = new FindDialog(MyTextArea);
-                    //findDialog.Show();
-                    findDialog.FindNextEvent += FindDialog_NextEvent;
-                    findDialog.FindPrevEvent += FindDialog_PreviousEvent;
+                    findDialog = new FindForm(MyTextArea);
                     findDialog.Show(this);
                 }
                 else
@@ -333,8 +333,7 @@ namespace MyTextEditor
             {
                 if (moveDialog == null || moveDialog.IsDisposed)
                 {
-                    moveDialog = new MoveDialog(MyTextArea);
-                    moveDialog.MoveEvent += MoveDialog_MoveEvent;
+                    moveDialog = new LineMoveForm(MyTextArea);
                     moveDialog.Show(this);
                 }
                 else
@@ -345,78 +344,7 @@ namespace MyTextEditor
             }
         }
 
-        //다음 찾기
-        private void FindDialog_NextEvent(object sender, EventArgs e)
-        {
-            if (findDialog != null)
-            {
-                int currentIndex = MyTextArea.SelectionStart + MyTextArea.SelectionLength;
-                int resultIndex = MyTextArea.Find(findDialog.SearchText, currentIndex, RichTextBoxFinds.None);
-
-                if (resultIndex != -1)
-                {
-                    // 다음 발생을 찾았으면 선택
-                    MyTextArea.Select(resultIndex, findDialog.SearchText.Length);
-                    MyTextArea.ScrollToCaret();
-                    this.Focus();
-                }
-                else
-                {
-                    // 다음 발생이 없으면 메시지 표시
-                    MessageBox.Show("더 이상 다음 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-            }
-
-        }
-
-        //이전 찾기
-        private void FindDialog_PreviousEvent(object sender, EventArgs e)
-        {
-            if (findDialog != null)
-            {
-                int currentIndex = MyTextArea.SelectionStart;
-                int resultIndex = MyTextArea.Find(findDialog.SearchText, 0, currentIndex, RichTextBoxFinds.Reverse);
-
-                if (resultIndex != -1)
-                {
-                    // 이전 발생을 찾았으면 선택
-                    MyTextArea.Select(resultIndex, findDialog.SearchText.Length);
-                    MyTextArea.ScrollToCaret();
-                    this.Focus();
-                }
-                else
-                {
-                    // 이전 발생이 없으면 메시지 표시
-                    MessageBox.Show("더 이상 이전 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
-        // 줄 이동 이벤트 핸들러
-        private void MoveDialog_MoveEvent(object sender, EventArgs e)
-        {
-            // MoveDialog에서 줄 이동 버튼을 클릭하면 호출되는 이벤트 핸들러
-            MoveDialog moveDialog = sender as MoveDialog;
-            if (moveDialog != null)
-            {
-                // 줄 이동 처리
-                int targetLine = moveDialog.TargetLine;
-                if (targetLine >= 1 && targetLine <= MyTextArea.Lines.Length)
-                {
-                    // 해당 줄로 커서 이동
-                    MyTextArea.SelectionStart = MyTextArea.GetFirstCharIndexFromLine(targetLine - 1);
-                    MyTextArea.ScrollToCaret();
-                    MyTextArea.Focus();
-                    moveDialog.Close();
-                }
-                else
-                {
-                    // 유효하지 않은 줄 번호일 경우 메시지 표시
-                    MessageBox.Show("유효하지 않은 줄 번호입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+        
         #endregion
 
         #region 나머지 이벤트
@@ -462,222 +390,12 @@ namespace MyTextEditor
         {
             // 현재 열려있는 폼이 없으면 프로그램 종료
             if (Application.OpenForms.Count == 0)
-            {     
+            {
                 Application.Exit();
             }
         }
         #endregion
-    }
 
-
-    //찾기 폼
-    public class FindDialog : Form
-    {
-        private Label findLabel;
-        private RichTextBox textBoxToSearch;
-        private Button findNextButton;
-        private Button cancleButton;
-        private CheckBox caseSensitiveCheckBox;
-        private CheckBox roundCheckBox;
-        private GroupBox directionGroupBox;
-        private RadioButton forwardRadioButton;
-        private RadioButton backwardRadioButton;
-
-        public event EventHandler FindNextEvent;
-        public event EventHandler FindPrevEvent;
-
-        public string SearchText => textBoxToSearch.Text;
-
-        public FindDialog(RichTextBox richtextBox)
-        {
-            textBoxToSearch = richtextBox;
-            InitializeUI();
-            this.Text = "찾기";
-            this.Width = 430;
-            this.Height = 180;
-        }
-
-        private void InitializeUI()
-        {
-            findLabel = new Label();
-            textBoxToSearch = new RichTextBox();
-            findNextButton = new Button();
-            cancleButton = new Button();
-            caseSensitiveCheckBox = new CheckBox();
-            roundCheckBox = new CheckBox();
-            directionGroupBox = new GroupBox();
-            forwardRadioButton = new RadioButton();
-            backwardRadioButton = new RadioButton();
-
-            //라벨
-            findLabel.Text = "찾을 내용(N) :";
-            findLabel.Location = new Point(10, 25);
-            findLabel.AutoSize = true;
-
-            //찾을 내용 TextBox
-            textBoxToSearch.Height = 25;
-            textBoxToSearch.Width = 200;
-            textBoxToSearch.Location = new Point(100, 20);
-
-
-            //다음 찾기 버튼 UI
-            findNextButton.Text = "다음 찾기(F)";
-            findNextButton.Height = 25;
-            findNextButton.Width = 80;
-            findNextButton.Location = new Point(310, 20);
-            findNextButton.Click += FindNextButton_Click;
-
-            //취소 버튼 UI
-            cancleButton.Text = "취소";
-            cancleButton.Height = 25;
-            cancleButton.Width = 80;
-            cancleButton.Location = new Point(310, 60);
-            cancleButton.Click += CancelButton_Click;
-
-            //대/소문자 구분 UI
-            caseSensitiveCheckBox.Text = "대/소문자 구분(C)";
-            caseSensitiveCheckBox.Location = new Point(10, 60);
-            caseSensitiveCheckBox.AutoSize = true;
-
-            //주위에 배치(R)
-            roundCheckBox.Text = "주위에 배치(R)";
-            roundCheckBox.Location = new Point(10, 90);
-            roundCheckBox.AutoSize = true;
-
-
-            //찾기 방향
-            directionGroupBox.Text = "방향";
-            directionGroupBox.Location = new Point(140, 50);
-            directionGroupBox.Size = new Size(160, 60);
-
-            // 찾기 방향 라디오 버튼
-            forwardRadioButton.Text = "위로(U)";
-            forwardRadioButton.Location = new Point(10, 20);
-            forwardRadioButton.AutoSize = true;
-
-            backwardRadioButton.Text = "아래로(D)";
-            backwardRadioButton.Location = new Point(80, 20);
-            backwardRadioButton.Checked = true;
-            backwardRadioButton.AutoSize = true;
-
-           
-            // 방향 그룹박스에 라디오 버튼 추가
-            directionGroupBox.Controls.Add(forwardRadioButton);
-            directionGroupBox.Controls.Add(backwardRadioButton);
-
-            // Add controls to the form
-            Controls.Add(findLabel);
-            Controls.Add(textBoxToSearch);
-            Controls.Add(findNextButton);
-            Controls.Add(cancleButton);
-            Controls.Add(caseSensitiveCheckBox);
-            Controls.Add(roundCheckBox);
-            Controls.Add(directionGroupBox);
-        }
-
-
-        private void FindNextButton_Click(object sender, EventArgs e)
-        {
-            FindNextEvent?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void FindPrevButton_Click(object sender, EventArgs e)
-        {
-            FindPrevEvent?.Invoke(this, EventArgs.Empty);
-
-        }
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            // 취소 버튼 클릭 시 폼 닫기
-            this.Close();
-        }
-        public void SetSearchText(string text)
-        {
-            textBoxToSearch.Text = text;
-        }
-    }
-
-
-    //줄 이동 폼
-    public class MoveDialog : Form
-    {
-        private Label findLabel;
-        private RichTextBox textBoxToMove;
-        private Button moveButton;
-        private Button cancleButton;
-
-        public event EventHandler MoveEvent;
-        public int TargetLine => int.Parse(textBoxToMove.Text);
-        public string MoveText => textBoxToMove.Text;
-        
-        public MoveDialog(RichTextBox richtextBox)
-        {
-            textBoxToMove = richtextBox;
-            InitializeUI();
-            this.Text = "줄 이동";
-            this.Width = 270;
-            this.Height = 160;
-        }
-
-        private void InitializeUI()
-        {
-            findLabel = new Label();
-            textBoxToMove = new RichTextBox();
-            moveButton = new Button();
-            cancleButton = new Button();
-
-            //라벨
-            findLabel.Text = "줄 번호(L) :";
-            findLabel.Location = new Point(10, 10);
-            findLabel.AutoSize = true;
-
-            //찾을 내용 TextBox
-            textBoxToMove.Height = 30;
-            textBoxToMove.Width = 230;
-            textBoxToMove.Location = new Point(10, 40);
-            textBoxToMove.KeyPress += TextBoxToMove_KeyPress;
-
-            //이동 버튼
-            moveButton.Text = "이동";
-            moveButton.Height = 25;
-            moveButton.Width = 70;
-            moveButton.Location = new Point(90, 80);
-            moveButton.Click += MoveButton_Click;
-
-            //취소 버튼
-            cancleButton.Text = "취소";
-            cancleButton.Height = 25;
-            cancleButton.Width = 70;
-            cancleButton.Location = new Point(170, 80);
-            cancleButton.Click += CancelButton_Click;
-
-            // Add controls to the form
-            Controls.Add(findLabel);
-            Controls.Add(textBoxToMove);
-            Controls.Add(moveButton);
-            Controls.Add(cancleButton);
-        }
-
-        private void MoveButton_Click(object sender, EventArgs e)
-        {
-            MoveEvent?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            // 취소 버튼 클릭 시 폼 닫기
-            this.Close();
-        }
-
-        // TextBox 입력 제한 - 숫자만 입력 가능하도록
-        private void TextBoxToMove_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
     }
 
 }
