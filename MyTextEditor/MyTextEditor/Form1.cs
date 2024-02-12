@@ -9,7 +9,6 @@ namespace MyTextEditor
         private LineMoveForm moveDialog;
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
-        //private string searchTextForFindDialog = string.Empty;
 
         public ¸Þ¸ðÀå()
         {
@@ -321,8 +320,8 @@ namespace MyTextEditor
             {
                 if (findDialog == null || findDialog.IsDisposed)
                 {
-                    findDialog = new FindForm(MyTextArea);
-                    findDialog.Show(this);
+                    findDialog = new FindForm(this);
+                    findDialog.Show();
                 }
                 else
                 {

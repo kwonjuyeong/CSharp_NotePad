@@ -86,6 +86,7 @@
             caseCheckBox.TabIndex = 4;
             caseCheckBox.Text = "대/소문자 구분(C)";
             caseCheckBox.UseVisualStyleBackColor = true;
+            caseCheckBox.CheckedChanged += caseCheckBox_CheckedChanged;
             // 
             // roundCheckBox
             // 
@@ -96,6 +97,7 @@
             roundCheckBox.TabIndex = 5;
             roundCheckBox.Text = "주위에 배치(R)";
             roundCheckBox.UseVisualStyleBackColor = true;
+            roundCheckBox.CheckedChanged += roundCheckBox_CheckedChanged;
             // 
             // directionGroupBox
             // 

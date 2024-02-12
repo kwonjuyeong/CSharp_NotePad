@@ -10,19 +10,20 @@ using System.Windows.Forms;
 
 namespace MyTextEditor
 {
-
+  
     //찾기 폼
     public partial class FindForm : Form
     {
+        메모장 Memo;
         private RichTextBox mainTextBox;
         private string LastSearch;
         private bool isCaseSensitive = false; // 대/소문자 구분 여부
         private bool isSearchForward = true; // 찾는 방향 (기본값: 아래로)
         private bool isSearchAround = false; // 주위에 배치 여부
 
-        public FindForm(RichTextBox textBox)
+        public FindForm(메모장 mainMemo)
         {
-            mainTextBox = textBox;
+            Memo = mainMemo;
             InitializeComponent();
         }
 

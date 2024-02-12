@@ -428,7 +428,7 @@
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripSeparator toolStripSeparator5;
-        private RichTextBox MyTextArea;
         private ToolStripMenuItem RedoToolTip;
+        public RichTextBox MyTextArea;
     }
 }
