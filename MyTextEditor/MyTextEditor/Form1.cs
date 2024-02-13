@@ -6,6 +6,8 @@ namespace MyTextEditor
     public partial class 메모장 : Form
     {
         private FindForm findDialog;
+        public string lastSearchText = string.Empty;
+
         private LineMoveForm moveDialog;
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
@@ -142,18 +144,26 @@ namespace MyTextEditor
         //다음 찾기(F3)
         private void FindNextToolTip_Click(object sender, EventArgs e)
         {
-            if (findDialog != null)
+            if (!string.IsNullOrEmpty(lastSearchText))
             {
-                findDialog.FindButton_Click(sender, e); // FindForm의 FindNextButton_Click 메소드 호출
+                findDialog.FindNext(lastSearchText);
+            }
+            else
+            {
+                ShowDialogs("find");
             }
         }
 
         //이전 찾기(SHIFT+F3)
         private void FindBeforeToolTip_Click(object sender, EventArgs e)
         {
-            if (findDialog != null)
+            if (!string.IsNullOrEmpty(lastSearchText))
             {
-                findDialog.FindButton_Click(sender, e); // FindForm에 FindPreviousButton_Click 메소드 구현 후 호출
+                findDialog.FindPrevious(lastSearchText);
+            }
+            else
+            {
+                ShowDialogs("find");
             }
         }
 
@@ -166,6 +176,7 @@ namespace MyTextEditor
         private void MoveTextToolTip_Click(object sender, EventArgs e)
         {
             ShowDialogs("move");
+
         }
 
         //모두 선택(Ctrl+A)

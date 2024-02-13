@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Data;
 
 namespace MyTextEditor
 {
@@ -15,61 +7,97 @@ namespace MyTextEditor
     public partial class FindForm : Form
     {
         메모장 Memo;
-        private RichTextBox mainTextBox;
-        private string LastSearch;
+
+        public bool isSearchForward = true; // 찾는 방향 (기본값: 아래로)
         private bool isCaseSensitive = false; // 대/소문자 구분 여부
-        private bool isSearchForward = true; // 찾는 방향 (기본값: 아래로)
         private bool isSearchAround = false; // 주위에 배치 여부
 
+
         public FindForm(메모장 mainMemo)
-        {
+        { 
             Memo = mainMemo;
             InitializeComponent();
+            textBoxToSearch.Text = Memo.lastSearchText;
         }
 
         public void FindButton_Click(object sender, EventArgs e)
         {
             string searchText = textBoxToSearch.Text;
+
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                LastSearch = searchText; // 마지막으로 입력한 텍스트 저장
-
-                // 대/소문자 구분 설정 적용
-                RichTextBoxFinds options = isCaseSensitive ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
-
-                // 주위에 배치 설정 적용
-                if (isSearchAround)
-                {
-                    options |= RichTextBoxFinds.WholeWord; // 전체 단어로 검색
-                }
-
-                int currentIndex = mainTextBox.SelectionStart;
-                int resultIndex;
-
-                if (isSearchForward)
-                {
-                    resultIndex = mainTextBox.Find(searchText, currentIndex, options);
-                }
-                else
-                {
-                    resultIndex = mainTextBox.Find(searchText, 0, currentIndex, options | RichTextBoxFinds.Reverse);
-                }
-
-                if (resultIndex != -1)
-                {
-                    // 결과가 찾아진 경우 선택하고 스크롤
-                    mainTextBox.Select(resultIndex, searchText.Length);
-                    mainTextBox.ScrollToCaret();
-                    this.Focus();
-                }
-                else
-                {
-                    MessageBox.Show(isSearchForward ? "더 이전에 찾을 수 없습니다." : "더 이후에 찾을 수 없습니다.", isSearchForward ? "이전 찾기" : "다음 찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                Find(searchText);
             }
             else
             {
                 MessageBox.Show("찾을 내용을 입력하세요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
+        public void Find(string searchText)
+        {
+            Memo.lastSearchText = searchText; // 마지막으로 찾은 문자열 저장
+
+            if (isSearchForward)
+                FindDown(searchText);
+            else
+                FindUp(searchText);
+        }
+
+        public void FindNext(string searchText)
+        {
+            if (isSearchForward)
+                FindDown(searchText);
+            else
+                FindUp(searchText);
+
+        }
+
+        public void FindPrevious(string searchText)
+        {
+            if (isSearchForward)
+                FindUp(searchText);
+            else
+                FindDown(searchText);
+           
+        }
+
+
+        public void FindDown(string searchText) {
+
+
+            int currentIndex = Memo.MyTextArea.SelectionStart + Memo.MyTextArea.SelectionLength;
+            int resultIndex = Memo.MyTextArea.Find(searchText, currentIndex, RichTextBoxFinds.None);
+
+            if (resultIndex != -1)
+            {
+                Memo.MyTextArea.Select(resultIndex, searchText.Length);
+                Memo.MyTextArea.ScrollToCaret();
+                Focus();
+            }
+            else
+            {
+                MessageBox.Show("더 이상 다음 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+
+        }
+
+        public void FindUp(string searchText)
+        {
+            int currentIndex = Memo.MyTextArea.SelectionStart;
+            int resultIndex = Memo.MyTextArea.Find(searchText, 0, currentIndex, RichTextBoxFinds.Reverse);
+
+            if (resultIndex != -1)
+            {
+                Memo.MyTextArea.Select(resultIndex, searchText.Length);
+                Memo.MyTextArea.ScrollToCaret();
+                Focus();
+            }
+            else
+            {
+                MessageBox.Show("더 이상 이전 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
