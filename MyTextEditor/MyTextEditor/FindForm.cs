@@ -39,36 +39,40 @@ namespace MyTextEditor
         {
             Memo.lastSearchText = searchText; // 마지막으로 찾은 문자열 저장
 
+            // 대/소문자 구분 설정 적용
+            RichTextBoxFinds options = isCaseSensitive ? RichTextBoxFinds.None : RichTextBoxFinds.MatchCase;
+
+
             if (isSearchForward)
-                FindDown(searchText);
+                FindDown(searchText, options);
             else
-                FindUp(searchText);
+                FindUp(searchText, options);
         }
 
         public void FindNext(string searchText)
         {
             if (isSearchForward)
-                FindDown(searchText);
+                FindDown(searchText, RichTextBoxFinds.None);
             else
-                FindUp(searchText);
+                FindUp(searchText, RichTextBoxFinds.None);
 
         }
 
         public void FindPrevious(string searchText)
         {
             if (isSearchForward)
-                FindUp(searchText);
+                FindUp(searchText, RichTextBoxFinds.None);
             else
-                FindDown(searchText);
+                FindDown(searchText, RichTextBoxFinds.None);
            
         }
 
 
-        public void FindDown(string searchText) {
+        public void FindDown(string searchText, RichTextBoxFinds options) {
 
 
             int currentIndex = Memo.MyTextArea.SelectionStart + Memo.MyTextArea.SelectionLength;
-            int resultIndex = Memo.MyTextArea.Find(searchText, currentIndex, RichTextBoxFinds.None);
+            int resultIndex = Memo.MyTextArea.Find(searchText, currentIndex, options);
 
             if (resultIndex != -1)
             {
@@ -84,10 +88,10 @@ namespace MyTextEditor
 
         }
 
-        public void FindUp(string searchText)
+        public void FindUp(string searchText, RichTextBoxFinds options)
         {
             int currentIndex = Memo.MyTextArea.SelectionStart;
-            int resultIndex = Memo.MyTextArea.Find(searchText, 0, currentIndex, RichTextBoxFinds.Reverse);
+            int resultIndex = Memo.MyTextArea.Find(searchText, 0, currentIndex, options | RichTextBoxFinds.Reverse);
 
             if (resultIndex != -1)
             {

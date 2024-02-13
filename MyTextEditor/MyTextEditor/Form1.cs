@@ -7,6 +7,8 @@ namespace MyTextEditor
     {
         private FindForm findDialog;
         public string lastSearchText = string.Empty;
+        public bool CaseSensitiveSearch { get; set; } = false; // 대/소문자 구분 여부
+
 
         private LineMoveForm moveDialog;
         private string currentFilePath = string.Empty;
