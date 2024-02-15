@@ -51,20 +51,13 @@ namespace MyTextEditor
 
         public void FindNext(string searchText)
         {
-            if (isSearchForward)
                 FindDown(searchText, RichTextBoxFinds.None);
-            else
-                FindUp(searchText, RichTextBoxFinds.None);
 
         }
 
         public void FindPrevious(string searchText)
         {
-            if (isSearchForward)
                 FindUp(searchText, RichTextBoxFinds.None);
-            else
-                FindDown(searchText, RichTextBoxFinds.None);
-           
         }
 
 

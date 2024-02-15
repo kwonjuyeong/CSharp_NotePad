@@ -148,7 +148,7 @@ namespace MyTextEditor
         {
             if (!string.IsNullOrEmpty(lastSearchText))
             {
-                findDialog.FindNext(lastSearchText);
+                findDialog.FindDown(lastSearchText, RichTextBoxFinds.None);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace MyTextEditor
         {
             if (!string.IsNullOrEmpty(lastSearchText))
             {
-                findDialog.FindPrevious(lastSearchText);
+                findDialog.FindUp(lastSearchText, RichTextBoxFinds.None);
             }
             else
             {
