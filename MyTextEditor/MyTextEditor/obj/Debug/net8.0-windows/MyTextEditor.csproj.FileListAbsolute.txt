@@ -17,3 +17,4 @@ C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\r
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.메모장.resources
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.FindForm.resources
 C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.LineMoveForm.resources
+C:\Users\kjy1h\source\repos\MyTextEditor\MyTextEditor\obj\Debug\net8.0-windows\MyTextEditor.ChangeForm.resources

@@ -7,8 +7,7 @@ namespace MyTextEditor
     {
         private FindForm findDialog;
         public string lastSearchText = string.Empty;
-        public bool CaseSensitiveSearch { get; set; } = false; // 대/소문자 구분 여부
-
+        public bool IsCase = false;
 
         private LineMoveForm moveDialog;
         private string currentFilePath = string.Empty;
@@ -148,7 +147,8 @@ namespace MyTextEditor
         {
             if (!string.IsNullOrEmpty(lastSearchText))
             {
-                findDialog.FindDown(lastSearchText, RichTextBoxFinds.None);
+                RichTextBoxFinds options = IsCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
+                findDialog.FindDown(lastSearchText, options);
             }
             else
             {
@@ -161,7 +161,9 @@ namespace MyTextEditor
         {
             if (!string.IsNullOrEmpty(lastSearchText))
             {
-                findDialog.FindUp(lastSearchText, RichTextBoxFinds.None);
+                RichTextBoxFinds options = IsCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
+
+                findDialog.FindUp(lastSearchText, options);
             }
             else
             {
@@ -334,7 +336,8 @@ namespace MyTextEditor
                 if (findDialog == null || findDialog.IsDisposed)
                 {
                     findDialog = new FindForm(this);
-                    findDialog.Show();
+                    findDialog.IsCase = IsCase;
+                    findDialog.Show(this);
                 }
                 else
                 {

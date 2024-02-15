@@ -10,6 +10,14 @@ namespace MyTextEditor
 
         public bool isSearchForward = true; // 찾는 방향 (기본값: 아래로)
         private bool isCaseSensitive = false; // 대/소문자 구분 여부
+        public bool IsCase
+        {
+            get { return isCaseSensitive; }
+            set { isCaseSensitive = value; }
+        }
+
+
+
         private bool isSearchAround = false; // 주위에 배치 여부
 
 
@@ -18,15 +26,17 @@ namespace MyTextEditor
             Memo = mainMemo;
             InitializeComponent();
             textBoxToSearch.Text = Memo.lastSearchText;
+            caseCheckBox.Checked = Memo.IsCase;
         }
 
         public void FindButton_Click(object sender, EventArgs e)
         {
             string searchText = textBoxToSearch.Text;
+            bool isCase = caseCheckBox.Checked;
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                Find(searchText);
+                Find(searchText, isCase);
             }
             else
             {
@@ -35,34 +45,23 @@ namespace MyTextEditor
 
         }
 
-        public void Find(string searchText)
+        public void Find(string searchText, bool isCase)
         {
             Memo.lastSearchText = searchText; // 마지막으로 찾은 문자열 저장
+            Memo.IsCase = isCase;
 
             // 대/소문자 구분 설정 적용
-            RichTextBoxFinds options = isCaseSensitive ? RichTextBoxFinds.None : RichTextBoxFinds.MatchCase;
-
+            RichTextBoxFinds options = isCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
 
             if (isSearchForward)
                 FindDown(searchText, options);
             else
                 FindUp(searchText, options);
-        }
-
-        public void FindNext(string searchText)
-        {
-                FindDown(searchText, RichTextBoxFinds.None);
-
-        }
-
-        public void FindPrevious(string searchText)
-        {
-                FindUp(searchText, RichTextBoxFinds.None);
+            Memo.MyTextArea.Focus();
         }
 
 
         public void FindDown(string searchText, RichTextBoxFinds options) {
-
 
             int currentIndex = Memo.MyTextArea.SelectionStart + Memo.MyTextArea.SelectionLength;
             int resultIndex = Memo.MyTextArea.Find(searchText, currentIndex, options);
@@ -71,11 +70,11 @@ namespace MyTextEditor
             {
                 Memo.MyTextArea.Select(resultIndex, searchText.Length);
                 Memo.MyTextArea.ScrollToCaret();
-                Focus();
+                Memo.MyTextArea.Focus();
             }
             else
             {
-                MessageBox.Show("더 이상 다음 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("더 이상 다음 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information); 
             }
 
 
@@ -90,7 +89,7 @@ namespace MyTextEditor
             {
                 Memo.MyTextArea.Select(resultIndex, searchText.Length);
                 Memo.MyTextArea.ScrollToCaret();
-                Focus();
+                Memo.MyTextArea.Focus();
             }
             else
             {
@@ -100,30 +99,30 @@ namespace MyTextEditor
 
 
         //취소 버튼
-        private void cancleButton_Click(object sender, EventArgs e)
+        private void CancleButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
         // 대/소문자 구분 체크박스 이벤트 핸들러
-        private void caseCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void CaseCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            isCaseSensitive = caseCheckBox.Checked;
+            Memo.IsCase = caseCheckBox.Checked;
         }
 
         // 주위에 배치 체크박스 이벤트 핸들러
-        private void roundCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void RoundCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             isSearchAround = roundCheckBox.Checked;
         }
 
         // 방향 설정 라디오 버튼 이벤트 핸들러
-        private void backwardRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void BackwardRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             isSearchForward = backwardRadioButton.Checked;
         }
 
-        private void forwardRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void ForwardRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             isSearchForward = !forwardRadioButton.Checked;
         }

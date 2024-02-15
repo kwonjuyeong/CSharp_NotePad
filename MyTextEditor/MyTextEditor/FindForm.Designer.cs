@@ -75,7 +75,7 @@
             cancleButton.TabIndex = 3;
             cancleButton.Text = "취소";
             cancleButton.UseVisualStyleBackColor = true;
-            cancleButton.Click += cancleButton_Click;
+            cancleButton.Click += CancleButton_Click;
             // 
             // caseCheckBox
             // 
@@ -86,7 +86,7 @@
             caseCheckBox.TabIndex = 4;
             caseCheckBox.Text = "대/소문자 구분(C)";
             caseCheckBox.UseVisualStyleBackColor = true;
-            caseCheckBox.CheckedChanged += caseCheckBox_CheckedChanged;
+            caseCheckBox.CheckedChanged += CaseCheckBox_CheckedChanged;
             // 
             // roundCheckBox
             // 
@@ -97,7 +97,7 @@
             roundCheckBox.TabIndex = 5;
             roundCheckBox.Text = "주위에 배치(R)";
             roundCheckBox.UseVisualStyleBackColor = true;
-            roundCheckBox.CheckedChanged += roundCheckBox_CheckedChanged;
+            roundCheckBox.CheckedChanged += RoundCheckBox_CheckedChanged;
             // 
             // directionGroupBox
             // 
@@ -121,7 +121,7 @@
             backwardRadioButton.TabStop = true;
             backwardRadioButton.Text = "아래로(D)";
             backwardRadioButton.UseVisualStyleBackColor = true;
-            backwardRadioButton.CheckedChanged += backwardRadioButton_CheckedChanged;
+            backwardRadioButton.CheckedChanged += BackwardRadioButton_CheckedChanged;
             // 
             // forwardRadioButton
             // 
@@ -132,7 +132,7 @@
             forwardRadioButton.TabIndex = 0;
             forwardRadioButton.Text = "위로(U)";
             forwardRadioButton.UseVisualStyleBackColor = true;
-            forwardRadioButton.CheckedChanged += forwardRadioButton_CheckedChanged;
+            forwardRadioButton.CheckedChanged += ForwardRadioButton_CheckedChanged;
             // 
             // FindForm
             // 
