@@ -91,13 +91,13 @@
             // roundCheckBox
             // 
             roundCheckBox.AutoSize = true;
+            roundCheckBox.Enabled = false;
             roundCheckBox.Location = new Point(10, 90);
             roundCheckBox.Name = "roundCheckBox";
             roundCheckBox.Size = new Size(105, 19);
             roundCheckBox.TabIndex = 5;
             roundCheckBox.Text = "주위에 배치(R)";
             roundCheckBox.UseVisualStyleBackColor = true;
-            roundCheckBox.CheckedChanged += RoundCheckBox_CheckedChanged;
             // 
             // directionGroupBox
             // 

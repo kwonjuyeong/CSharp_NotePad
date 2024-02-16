@@ -1,5 +1,6 @@
 using Microsoft.VisualBasic;
 using System.Drawing.Printing;
+using System.Windows.Forms;
 
 namespace MyTextEditor
 {
@@ -10,6 +11,7 @@ namespace MyTextEditor
         public bool IsCase = false;
 
         private LineMoveForm moveDialog;
+
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
 
@@ -162,7 +164,6 @@ namespace MyTextEditor
             if (!string.IsNullOrEmpty(lastSearchText))
             {
                 RichTextBoxFinds options = IsCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
-
                 findDialog.FindUp(lastSearchText, options);
             }
             else
@@ -180,7 +181,6 @@ namespace MyTextEditor
         private void MoveTextToolTip_Click(object sender, EventArgs e)
         {
             ShowDialogs("move");
-
         }
 
         //모두 선택(Ctrl+A)
@@ -196,6 +196,59 @@ namespace MyTextEditor
             ControlFocusBack();
         }
         #endregion
+
+        #region 3. 서식 메뉴
+        //자동 줄바꿈
+        private void AutoLineToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (AutoLineToolStripMenuItem.Checked == false)
+            {
+                AutoLineToolStripMenuItem.Checked = true;
+                MyTextArea.WordWrap = true;
+            }
+            else
+            {
+                AutoLineToolStripMenuItem.Checked = false;
+                MyTextArea.WordWrap = false;
+            }
+
+        }
+
+        //글꼴
+        private void FontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontDialog fontDialog = new FontDialog();
+            if (fontDialog.ShowDialog() == DialogResult.OK)
+            {
+                MyTextArea.Font = fontDialog.Font;
+            }
+        }
+        #endregion
+
+
+        #region 4. 보기 메뉴
+
+        //확대하기
+        private void ZoomINToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        //축소하기
+        private void ZoomOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        //기본값으로
+        private void DefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+
+
+
+        #endregion
+
+
 
         #region 메소드
         // 파일 저장 메소드
@@ -336,7 +389,6 @@ namespace MyTextEditor
                 if (findDialog == null || findDialog.IsDisposed)
                 {
                     findDialog = new FindForm(this);
-                    findDialog.IsCase = IsCase;
                     findDialog.Show(this);
                 }
                 else
@@ -359,7 +411,7 @@ namespace MyTextEditor
             }
         }
 
-        
+
         #endregion
 
         #region 나머지 이벤트
@@ -410,6 +462,7 @@ namespace MyTextEditor
             }
         }
         #endregion
+
 
     }
 

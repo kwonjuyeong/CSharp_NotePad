@@ -59,13 +59,13 @@
             AllSelectTextToolTip = new ToolStripMenuItem();
             TimeTextToolTip = new ToolStripMenuItem();
             서식OToolStripMenuItem = new ToolStripMenuItem();
-            자동줄바꿈ToolStripMenuItem = new ToolStripMenuItem();
-            글꼴ToolStripMenuItem = new ToolStripMenuItem();
+            AutoLineToolStripMenuItem = new ToolStripMenuItem();
+            FontToolStripMenuItem = new ToolStripMenuItem();
             보기VToolStripMenuItem = new ToolStripMenuItem();
             확대하기축소하기ToolStripMenuItem = new ToolStripMenuItem();
-            확대ToolStripMenuItem = new ToolStripMenuItem();
-            축소ToolStripMenuItem = new ToolStripMenuItem();
-            기본값으로ToolStripMenuItem = new ToolStripMenuItem();
+            ZoomINToolStripMenuItem = new ToolStripMenuItem();
+            ZoomOutToolStripMenuItem = new ToolStripMenuItem();
+            DefaultToolStripMenuItem = new ToolStripMenuItem();
             상태표시줄ToolStripMenuItem = new ToolStripMenuItem();
             도움말HToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
@@ -296,22 +296,24 @@
             // 
             // 서식OToolStripMenuItem
             // 
-            서식OToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 자동줄바꿈ToolStripMenuItem, 글꼴ToolStripMenuItem });
+            서식OToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { AutoLineToolStripMenuItem, FontToolStripMenuItem });
             서식OToolStripMenuItem.Name = "서식OToolStripMenuItem";
             서식OToolStripMenuItem.Size = new Size(60, 20);
             서식OToolStripMenuItem.Text = "서식(O)";
             // 
-            // 자동줄바꿈ToolStripMenuItem
+            // AutoLineToolStripMenuItem
             // 
-            자동줄바꿈ToolStripMenuItem.Name = "자동줄바꿈ToolStripMenuItem";
-            자동줄바꿈ToolStripMenuItem.Size = new Size(138, 22);
-            자동줄바꿈ToolStripMenuItem.Text = "자동 줄바꿈";
+            AutoLineToolStripMenuItem.Name = "AutoLineToolStripMenuItem";
+            AutoLineToolStripMenuItem.Size = new Size(138, 22);
+            AutoLineToolStripMenuItem.Text = "자동 줄바꿈";
+            AutoLineToolStripMenuItem.Click += AutoLineToolStripMenuItem_Click;
             // 
-            // 글꼴ToolStripMenuItem
+            // FontToolStripMenuItem
             // 
-            글꼴ToolStripMenuItem.Name = "글꼴ToolStripMenuItem";
-            글꼴ToolStripMenuItem.Size = new Size(138, 22);
-            글꼴ToolStripMenuItem.Text = "글꼴";
+            FontToolStripMenuItem.Name = "FontToolStripMenuItem";
+            FontToolStripMenuItem.Size = new Size(138, 22);
+            FontToolStripMenuItem.Text = "글꼴";
+            FontToolStripMenuItem.Click += FontToolStripMenuItem_Click;
             // 
             // 보기VToolStripMenuItem
             // 
@@ -322,33 +324,41 @@
             // 
             // 확대하기축소하기ToolStripMenuItem
             // 
-            확대하기축소하기ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 확대ToolStripMenuItem, 축소ToolStripMenuItem, 기본값으로ToolStripMenuItem });
+            확대하기축소하기ToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ZoomINToolStripMenuItem, ZoomOutToolStripMenuItem, DefaultToolStripMenuItem });
             확대하기축소하기ToolStripMenuItem.Name = "확대하기축소하기ToolStripMenuItem";
-            확대하기축소하기ToolStripMenuItem.Size = new Size(175, 22);
+            확대하기축소하기ToolStripMenuItem.Size = new Size(180, 22);
             확대하기축소하기ToolStripMenuItem.Text = "확대하기/축소하기";
             // 
-            // 확대ToolStripMenuItem
+            // ZoomINToolStripMenuItem
             // 
-            확대ToolStripMenuItem.Name = "확대ToolStripMenuItem";
-            확대ToolStripMenuItem.Size = new Size(134, 22);
-            확대ToolStripMenuItem.Text = "확대";
+            ZoomINToolStripMenuItem.Name = "ZoomINToolStripMenuItem";
+            ZoomINToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+더하기";
+            ZoomINToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Oemplus;
+            ZoomINToolStripMenuItem.Size = new Size(282, 22);
+            ZoomINToolStripMenuItem.Text = "확대";
+            ZoomINToolStripMenuItem.Click += ZoomINToolStripMenuItem_Click;
             // 
-            // 축소ToolStripMenuItem
+            // ZoomOutToolStripMenuItem
             // 
-            축소ToolStripMenuItem.Name = "축소ToolStripMenuItem";
-            축소ToolStripMenuItem.Size = new Size(134, 22);
-            축소ToolStripMenuItem.Text = "축소";
+            ZoomOutToolStripMenuItem.Name = "ZoomOutToolStripMenuItem";
+            ZoomOutToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+빼기";
+            ZoomOutToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.OemMinus;
+            ZoomOutToolStripMenuItem.Size = new Size(282, 22);
+            ZoomOutToolStripMenuItem.Text = "축소";
+            ZoomOutToolStripMenuItem.Click += ZoomOutToolStripMenuItem_Click;
             // 
-            // 기본값으로ToolStripMenuItem
+            // DefaultToolStripMenuItem
             // 
-            기본값으로ToolStripMenuItem.Name = "기본값으로ToolStripMenuItem";
-            기본값으로ToolStripMenuItem.Size = new Size(134, 22);
-            기본값으로ToolStripMenuItem.Text = "기본값으로";
+            DefaultToolStripMenuItem.Name = "DefaultToolStripMenuItem";
+            DefaultToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
+            DefaultToolStripMenuItem.Size = new Size(282, 22);
+            DefaultToolStripMenuItem.Text = "확대하기/축소하기 기본값으로";
+            DefaultToolStripMenuItem.Click += DefaultToolStripMenuItem_Click;
             // 
             // 상태표시줄ToolStripMenuItem
             // 
             상태표시줄ToolStripMenuItem.Name = "상태표시줄ToolStripMenuItem";
-            상태표시줄ToolStripMenuItem.Size = new Size(175, 22);
+            상태표시줄ToolStripMenuItem.Size = new Size(180, 22);
             상태표시줄ToolStripMenuItem.Text = "상태 표시줄";
             // 
             // 도움말HToolStripMenuItem
@@ -375,6 +385,7 @@
             ClientSize = new Size(855, 503);
             Controls.Add(MyTextArea);
             Controls.Add(menuStrip1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             MainMenuStrip = menuStrip1;
             Name = "메모장";
             Text = "제목없음 - 내가만든메모장";
@@ -415,8 +426,8 @@
         private ToolStripMenuItem MoveTextToolTip;
         private ToolStripMenuItem AllSelectTextToolTip;
         private ToolStripMenuItem TimeTextToolTip;
-        private ToolStripMenuItem 자동줄바꿈ToolStripMenuItem;
-        private ToolStripMenuItem 글꼴ToolStripMenuItem;
+        private ToolStripMenuItem AutoLineToolStripMenuItem;
+        private ToolStripMenuItem FontToolStripMenuItem;
         private ToolStripMenuItem 확대하기축소하기ToolStripMenuItem;
         private ToolStripMenuItem 확대ToolStripMenuItem;
         private ToolStripMenuItem 축소ToolStripMenuItem;
@@ -430,5 +441,8 @@
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem RedoToolTip;
         public RichTextBox MyTextArea;
+        private ToolStripMenuItem ZoomINToolStripMenuItem;
+        private ToolStripMenuItem ZoomOutToolStripMenuItem;
+        private ToolStripMenuItem DefaultToolStripMenuItem;
     }
 }

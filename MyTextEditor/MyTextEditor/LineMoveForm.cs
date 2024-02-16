@@ -54,7 +54,7 @@ namespace MyTextEditor
             }
             else
             {
-                MessageBox.Show("유효하지 않은 줄 번호입니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("줄 번호가 범위를 벗어났습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -63,6 +63,6 @@ namespace MyTextEditor
             this.Close();
         }
 
-      
+   
     }
 }

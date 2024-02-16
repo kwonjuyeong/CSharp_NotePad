@@ -7,19 +7,9 @@ namespace MyTextEditor
     public partial class FindForm : Form
     {
         메모장 Memo;
-
+        public int lastSearchIndex = -1;
         public bool isSearchForward = true; // 찾는 방향 (기본값: 아래로)
-        private bool isCaseSensitive = false; // 대/소문자 구분 여부
-        public bool IsCase
-        {
-            get { return isCaseSensitive; }
-            set { isCaseSensitive = value; }
-        }
-
-
-
-        private bool isSearchAround = false; // 주위에 배치 여부
-
+     
 
         public FindForm(메모장 mainMemo)
         { 
@@ -34,9 +24,12 @@ namespace MyTextEditor
             string searchText = textBoxToSearch.Text;
             bool isCase = caseCheckBox.Checked;
 
+            // 대/소문자 구분 설정 적용
+            RichTextBoxFinds options = isCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
+
             if (!string.IsNullOrWhiteSpace(searchText))
             {
-                Find(searchText, isCase);
+                Find(searchText, options);
             }
             else
             {
@@ -45,14 +38,10 @@ namespace MyTextEditor
 
         }
 
-        public void Find(string searchText, bool isCase)
+        public void Find(string searchText, RichTextBoxFinds options)
         {
             Memo.lastSearchText = searchText; // 마지막으로 찾은 문자열 저장
-            Memo.IsCase = isCase;
-
-            // 대/소문자 구분 설정 적용
-            RichTextBoxFinds options = isCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
-
+           
             if (isSearchForward)
                 FindDown(searchText, options);
             else
@@ -63,37 +52,35 @@ namespace MyTextEditor
 
         public void FindDown(string searchText, RichTextBoxFinds options) {
 
-            int currentIndex = Memo.MyTextArea.SelectionStart + Memo.MyTextArea.SelectionLength;
-            int resultIndex = Memo.MyTextArea.Find(searchText, currentIndex, options);
+            int startIndex = lastSearchIndex == -1 ? 0 : lastSearchIndex + 1;
+            int resultIndex = Memo.MyTextArea.Find(searchText, startIndex, options);
 
             if (resultIndex != -1)
             {
                 Memo.MyTextArea.Select(resultIndex, searchText.Length);
-                Memo.MyTextArea.ScrollToCaret();
-                Memo.MyTextArea.Focus();
+                lastSearchIndex = resultIndex;
             }
             else
             {
-                MessageBox.Show("더 이상 다음 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                MessageBox.Show($"다음 {searchText}를 찾을 수 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
+             
             }
-
 
         }
 
         public void FindUp(string searchText, RichTextBoxFinds options)
         {
-            int currentIndex = Memo.MyTextArea.SelectionStart;
-            int resultIndex = Memo.MyTextArea.Find(searchText, 0, currentIndex, options | RichTextBoxFinds.Reverse);
+            int startIndex = lastSearchIndex == -1 ? Memo.MyTextArea.Text.Length - 1 : lastSearchIndex - 1;
+            int resultIndex = Memo.MyTextArea.Find(searchText, 0, startIndex, options | RichTextBoxFinds.Reverse);
 
             if (resultIndex != -1)
             {
                 Memo.MyTextArea.Select(resultIndex, searchText.Length);
-                Memo.MyTextArea.ScrollToCaret();
-                Memo.MyTextArea.Focus();
+                lastSearchIndex = resultIndex;
             }
             else
             {
-                MessageBox.Show("더 이상 이전 발생이 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"이전 {searchText}를 찾을 수 없습니다.", "찾기", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -110,12 +97,7 @@ namespace MyTextEditor
             Memo.IsCase = caseCheckBox.Checked;
         }
 
-        // 주위에 배치 체크박스 이벤트 핸들러
-        private void RoundCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            isSearchAround = roundCheckBox.Checked;
-        }
-
+       
         // 방향 설정 라디오 버튼 이벤트 핸들러
         private void BackwardRadioButton_CheckedChanged(object sender, EventArgs e)
         {
