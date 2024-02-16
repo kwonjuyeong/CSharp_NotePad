@@ -6,18 +6,21 @@ namespace MyTextEditor
 {
     public partial class 메모장 : Form
     {
+        private string currentFilePath = string.Empty;
+        private bool isTextChanged = false;
+
         private FindForm findDialog;
         public string lastSearchText = string.Empty;
         public bool IsCase = false;
-
         private LineMoveForm moveDialog;
 
-        private string currentFilePath = string.Empty;
-        private bool isTextChanged = false;
+
+        private Font DefaultFont;
 
         public 메모장()
         {
             InitializeComponent();
+            DefaultFont = MyTextArea.Font;
         }
 
         #region 1. 파일 메뉴
@@ -221,34 +224,41 @@ namespace MyTextEditor
             if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 MyTextArea.Font = fontDialog.Font;
+              
+                DefaultFont = MyTextArea.Font;
             }
         }
         #endregion
 
 
         #region 4. 보기 메뉴
-
-        //확대하기
-        private void ZoomINToolStripMenuItem_Click(object sender, EventArgs e)
+        // 확대하기
+        private void ZoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (MyTextArea.ZoomFactor < 64) // 최대 값은 64
+            {
+                MyTextArea.ZoomFactor += 0.1f; // 조절 가능한 값은 1.0f까지
+            }
         }
 
-        //축소하기
+        // 축소하기
         private void ZoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (MyTextArea.ZoomFactor > 0.2f) // 최소 값은 0.2f
+            {
+                MyTextArea.ZoomFactor -= 0.1f; // 조절 가능한 값은 1.0f까지
+            }
         }
 
-        //기본값으로
+        // 기본값으로
         private void DefaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MyTextArea.ZoomFactor = 1;
         }
 
-
-
+   
 
         #endregion
-
-
 
         #region 메소드
         // 파일 저장 메소드
@@ -411,6 +421,28 @@ namespace MyTextEditor
             }
         }
 
+        private void 메모장_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                if (e.Delta > 0)
+                {
+                    if (MyTextArea.ZoomFactor < 64)
+                    {
+                        MyTextArea.ZoomFactor += 0.1f;
+                    }
+
+                }
+                else if (e.Delta < 0)
+                {
+                    if (MyTextArea.ZoomFactor > 0.2f)
+                    {
+                        MyTextArea.ZoomFactor -= 0.1f;
+                    }
+
+                }
+            }
+        }
 
         #endregion
 
