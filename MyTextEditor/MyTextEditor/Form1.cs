@@ -6,22 +6,23 @@ namespace MyTextEditor
 {
     public partial class 메모장 : Form
     {
-        private string currentFilePath = string.Empty;
-        private bool isTextChanged = false;
-
-        private FindForm findDialog;
-        public string lastSearchText = string.Empty;
-        public bool IsCase = false;
-        private LineMoveForm moveDialog;
-
-
-        private Font DefaultFont;
-
         public 메모장()
         {
             InitializeComponent();
-            DefaultFont = MyTextArea.Font;
         }
+
+        //File 변수
+        private string currentFilePath = string.Empty;
+        private bool isTextChanged = false;
+
+        //찾기 폼 변수
+        private FindForm findDialog;
+        public string lastSearchText = string.Empty;
+        public bool IsCase = false;
+
+        //줄 바꿈, 메모장 정보 변수
+        private LineMoveForm moveDialog;
+        private Information infoDialog;
 
         #region 1. 파일 메뉴
 
@@ -75,7 +76,7 @@ namespace MyTextEditor
         //인쇄(Ctrl+P)
         private void PrintToolTip_Click(object sender, EventArgs e)
         {
-            CallPrintDialog();
+            ShowDialogs("print");
         }
 
         //끝내기
@@ -139,40 +140,22 @@ namespace MyTextEditor
             }
         }
 
-
         //찾기(Ctrl+F)
         private void FindTextToolTip_Click(object sender, EventArgs e)
         {
             ShowDialogs("find");
         }
 
-
         //다음 찾기(F3)
         private void FindNextToolTip_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(lastSearchText))
-            {
-                RichTextBoxFinds options = IsCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
-                findDialog.FindDown(lastSearchText, options);
-            }
-            else
-            {
-                ShowDialogs("find");
-            }
+            FindNextPrev("down");
         }
 
         //이전 찾기(SHIFT+F3)
         private void FindBeforeToolTip_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(lastSearchText))
-            {
-                RichTextBoxFinds options = IsCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
-                findDialog.FindUp(lastSearchText, options);
-            }
-            else
-            {
-                ShowDialogs("find");
-            }
+            FindNextPrev("up");
         }
 
         //바꾸기(Ctrl+H)
@@ -220,13 +203,7 @@ namespace MyTextEditor
         //글꼴
         private void FontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FontDialog fontDialog = new FontDialog();
-            if (fontDialog.ShowDialog() == DialogResult.OK)
-            {
-                MyTextArea.Font = fontDialog.Font;
-              
-                DefaultFont = MyTextArea.Font;
-            }
+            ShowDialogs("font");
         }
         #endregion
 
@@ -235,19 +212,13 @@ namespace MyTextEditor
         // 확대하기
         private void ZoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MyTextArea.ZoomFactor < 64) // 최대 값은 64
-            {
-                MyTextArea.ZoomFactor += 0.1f; // 조절 가능한 값은 1.0f까지
-            }
+            ZoomIn();
         }
 
         // 축소하기
         private void ZoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MyTextArea.ZoomFactor > 0.2f) // 최소 값은 0.2f
-            {
-                MyTextArea.ZoomFactor -= 0.1f; // 조절 가능한 값은 1.0f까지
-            }
+            ZoomOut();
         }
 
         // 기본값으로
@@ -255,9 +226,20 @@ namespace MyTextEditor
         {
             MyTextArea.ZoomFactor = 1;
         }
+        #endregion
 
-   
 
+        #region 4. 보기 메뉴
+        //도움말
+        private void QAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        //메모장 정보
+        private void InformationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowDialogs("info");
+        }
         #endregion
 
         #region 메소드
@@ -361,26 +343,6 @@ namespace MyTextEditor
             }
         }
 
-        //인쇄
-        private void CallPrintDialog()
-        {
-            PrintDialog printDialog = new PrintDialog();
-            printDialog.Document = new PrintDocument();
-
-            if (printDialog.ShowDialog() == DialogResult.OK)
-            {
-                printDialog.Document.PrintPage += new PrintPageEventHandler(PrintDocument_PrintPage);
-                printDialog.Document.Print();
-            }
-        }
-
-        // 프린트할 때 호출되는 이벤트 핸들러
-        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            Font font = new Font("Arial", 12);
-            e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
-        }
-
         //커서 위치 이동(맨 뒤)
         private void ControlFocusBack()
         {
@@ -417,9 +379,41 @@ namespace MyTextEditor
                 {
                     moveDialog.BringToFront();
                 }
+            }
+            else if(spec == "info")
+            {
+                 infoDialog = new Information();
+                 infoDialog.ShowDialog();
+            }
+            else if(spec == "print")
+            {
+                PrintDialog printDialog = new PrintDialog();
+                printDialog.Document = new PrintDocument();
 
+                if (printDialog.ShowDialog() == DialogResult.OK)
+                {
+                    printDialog.Document.PrintPage += new PrintPageEventHandler(PrintDocument_PrintPage);
+                    printDialog.Document.Print();
+                }
+            }
+            else if(spec == "font")
+            {
+                FontDialog fontDialog = new FontDialog();
+                if (fontDialog.ShowDialog() == DialogResult.OK)
+                {
+                    MyTextArea.Font = fontDialog.Font;
+                }
             }
         }
+
+
+        // 프린트할 때 호출되는 이벤트 핸들러
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font font = new Font("Arial", 12);
+            e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
+        }
+
 
         private void 메모장_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -427,21 +421,57 @@ namespace MyTextEditor
             {
                 if (e.Delta > 0)
                 {
-                    if (MyTextArea.ZoomFactor < 64)
-                    {
-                        MyTextArea.ZoomFactor += 0.1f;
-                    }
+                   ZoomIn();
 
                 }
                 else if (e.Delta < 0)
                 {
-                    if (MyTextArea.ZoomFactor > 0.2f)
-                    {
-                        MyTextArea.ZoomFactor -= 0.1f;
-                    }
+                   ZoomOut();
 
                 }
             }
+        }
+
+        //확대 메소드
+        private void ZoomIn()
+        {
+            if (MyTextArea.ZoomFactor < 64)
+            {
+                MyTextArea.ZoomFactor += 0.1f;
+            }
+        }
+
+        //축소 메소드
+        private void ZoomOut() 
+        {
+            if (MyTextArea.ZoomFactor > 0.2f)
+            {
+                MyTextArea.ZoomFactor -= 0.1f;
+            }
+        }
+
+        //이전 찾기, 다음 찾기
+        private void FindNextPrev(string direction)
+        {
+            if (!string.IsNullOrEmpty(lastSearchText))
+            {
+                RichTextBoxFinds options = IsCase ? RichTextBoxFinds.MatchCase : RichTextBoxFinds.None;
+                if (direction == "up")
+                {
+                    findDialog.FindUp(lastSearchText, options);
+                }
+                else
+                {
+                    findDialog.FindDown(lastSearchText, options);
+                    
+                }
+            }
+            else
+            {
+                ShowDialogs("find");
+            }
+
+        
         }
 
         #endregion
@@ -495,7 +525,7 @@ namespace MyTextEditor
         }
         #endregion
 
-
+       
     }
 
 }

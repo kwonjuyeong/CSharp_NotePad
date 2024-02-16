@@ -68,11 +68,10 @@
             DefaultToolStripMenuItem = new ToolStripMenuItem();
             상태표시줄ToolStripMenuItem = new ToolStripMenuItem();
             도움말HToolStripMenuItem = new ToolStripMenuItem();
-            도움말ToolStripMenuItem = new ToolStripMenuItem();
-            메모장정보ToolStripMenuItem = new ToolStripMenuItem();
+            QAToolStripMenuItem = new ToolStripMenuItem();
+            InformationToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
             MyTextArea = new RichTextBox();
-            MyTextArea.MouseWheel+= 메모장_MouseWheel;
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             SuspendLayout();
@@ -366,26 +365,29 @@
             // 
             // 도움말HToolStripMenuItem
             // 
-            도움말HToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 도움말ToolStripMenuItem, 메모장정보ToolStripMenuItem });
+            도움말HToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { QAToolStripMenuItem, InformationToolStripMenuItem });
             도움말HToolStripMenuItem.Name = "도움말HToolStripMenuItem";
             도움말HToolStripMenuItem.Size = new Size(72, 20);
             도움말HToolStripMenuItem.Text = "도움말(H)";
             // 
-            // 도움말ToolStripMenuItem
+            // QAToolStripMenuItem
             // 
-            도움말ToolStripMenuItem.Name = "도움말ToolStripMenuItem";
-            도움말ToolStripMenuItem.Size = new Size(138, 22);
-            도움말ToolStripMenuItem.Text = "도움말 보기";
+            QAToolStripMenuItem.Name = "QAToolStripMenuItem";
+            QAToolStripMenuItem.Size = new Size(180, 22);
+            QAToolStripMenuItem.Text = "도움말 보기";
+            QAToolStripMenuItem.Click += QAToolStripMenuItem_Click;
             // 
-            // 메모장정보ToolStripMenuItem
+            // InformationToolStripMenuItem
             // 
-            메모장정보ToolStripMenuItem.Name = "메모장정보ToolStripMenuItem";
-            메모장정보ToolStripMenuItem.Size = new Size(138, 22);
-            메모장정보ToolStripMenuItem.Text = "메모장 정보";
+            InformationToolStripMenuItem.Name = "InformationToolStripMenuItem";
+            InformationToolStripMenuItem.Size = new Size(180, 22);
+            InformationToolStripMenuItem.Text = "메모장 정보";
+            InformationToolStripMenuItem.Click += InformationToolStripMenuItem_Click;
             // 
             // MyTextArea
             // 
             MyTextArea.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            MyTextArea.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
             MyTextArea.Location = new Point(0, 27);
             MyTextArea.Name = "MyTextArea";
             MyTextArea.Size = new Size(855, 477);
@@ -394,6 +396,7 @@
             MyTextArea.WordWrap = false;
             MyTextArea.SelectionChanged += MyTextArea_SelectionChanged;
             MyTextArea.TextChanged += MyTextArea_TextChanged;
+            MyTextArea.MouseWheel += 메모장_MouseWheel;
             // 
             // 메모장
             // 
@@ -461,7 +464,7 @@
         private ToolStripMenuItem ZoomINToolStripMenuItem;
         private ToolStripMenuItem ZoomOutToolStripMenuItem;
         private ToolStripMenuItem DefaultToolStripMenuItem;
-        private ToolStripMenuItem 도움말ToolStripMenuItem;
-        private ToolStripMenuItem 메모장정보ToolStripMenuItem;
+        private ToolStripMenuItem QAToolStripMenuItem;
+        private ToolStripMenuItem InformationToolStripMenuItem;
     }
 }
