@@ -24,6 +24,10 @@ namespace MyTextEditor
         private LineMoveForm moveDialog;
         private Information infoDialog;
 
+        private PageSettings pageSetting = new PageSettings();
+        private PrinterSettings printerSetting = new PrinterSettings();
+
+
         #region 1. 파일 메뉴
 
         // 새 파일(Ctrl+N)
@@ -71,6 +75,19 @@ namespace MyTextEditor
         //페이지 설정
         private void PageSettingToolTip_Click(object sender, EventArgs e)
         {
+            PageSetupDialog pageSetupDialog = new PageSetupDialog();
+            pageSetupDialog.PageSettings = pageSetting;
+            pageSetupDialog.PrinterSettings = printerSetting;
+            pageSetupDialog.AllowPrinter = true;
+            pageSetupDialog.AllowOrientation = true;
+            pageSetupDialog.EnableMetric = true; //인치 - 밀리미터 문제
+       
+            // 페이지 설정 다이얼로그가 닫힐 때 이벤트 처리
+            if (pageSetupDialog.ShowDialog() == DialogResult.OK)
+            {
+                pageSetting = pageSetupDialog.PageSettings;
+            }
+
         }
 
         //인쇄(Ctrl+P)
@@ -106,7 +123,7 @@ namespace MyTextEditor
 
         //자르기(Ctrl+X)
         private void CutTextToolTip_Click(object sender, EventArgs e)
-        {
+        { 
             if (MyTextArea.SelectionLength > 0)
             {
                 MyTextArea.Cut();
