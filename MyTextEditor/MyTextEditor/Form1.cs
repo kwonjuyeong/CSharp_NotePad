@@ -81,7 +81,7 @@ namespace MyTextEditor
             pageSetupDialog.AllowPrinter = true;
             pageSetupDialog.AllowOrientation = true;
             pageSetupDialog.EnableMetric = true; //인치 - 밀리미터 문제
-       
+
             // 페이지 설정 다이얼로그가 닫힐 때 이벤트 처리
             if (pageSetupDialog.ShowDialog() == DialogResult.OK)
             {
@@ -123,7 +123,7 @@ namespace MyTextEditor
 
         //자르기(Ctrl+X)
         private void CutTextToolTip_Click(object sender, EventArgs e)
-        { 
+        {
             if (MyTextArea.SelectionLength > 0)
             {
                 MyTextArea.Cut();
@@ -242,6 +242,24 @@ namespace MyTextEditor
         private void DefaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MyTextArea.ZoomFactor = 1;
+            UpdateStatusBar();
+        }
+
+
+        //상태 표시줄
+        private void StatusBarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (StatusBarToolStripMenuItem.Checked == false)
+            {
+                StatusBarToolStripMenuItem.Checked = true;
+                statusStrip1.Visible = true;
+            }
+            else
+            {
+                StatusBarToolStripMenuItem.Checked = false;
+                statusStrip1.Visible = false;
+            }
+
         }
         #endregion
 
@@ -397,12 +415,12 @@ namespace MyTextEditor
                     moveDialog.BringToFront();
                 }
             }
-            else if(spec == "info")
+            else if (spec == "info")
             {
-                 infoDialog = new Information();
-                 infoDialog.ShowDialog();
+                infoDialog = new Information();
+                infoDialog.ShowDialog();
             }
-            else if(spec == "print")
+            else if (spec == "print")
             {
                 PrintDialog printDialog = new PrintDialog();
                 printDialog.Document = new PrintDocument();
@@ -413,7 +431,7 @@ namespace MyTextEditor
                     printDialog.Document.Print();
                 }
             }
-            else if(spec == "font")
+            else if (spec == "font")
             {
                 FontDialog fontDialog = new FontDialog();
                 if (fontDialog.ShowDialog() == DialogResult.OK)
@@ -438,13 +456,13 @@ namespace MyTextEditor
             {
                 if (e.Delta > 0)
                 {
-                   ZoomIn();
+                    ZoomIn();
+                    
 
                 }
                 else if (e.Delta < 0)
                 {
-                   ZoomOut();
-
+                    ZoomOut();
                 }
             }
         }
@@ -455,15 +473,17 @@ namespace MyTextEditor
             if (MyTextArea.ZoomFactor < 64)
             {
                 MyTextArea.ZoomFactor += 0.1f;
+                UpdateStatusBar();
             }
         }
 
         //축소 메소드
-        private void ZoomOut() 
+        private void ZoomOut()
         {
             if (MyTextArea.ZoomFactor > 0.2f)
             {
                 MyTextArea.ZoomFactor -= 0.1f;
+                UpdateStatusBar();
             }
         }
 
@@ -480,16 +500,30 @@ namespace MyTextEditor
                 else
                 {
                     findDialog.FindDown(lastSearchText, options);
-                    
+
                 }
             }
             else
             {
                 ShowDialogs("find");
             }
-
-        
         }
+
+        //커서 행과 열 정보
+        private void UpdateStatusBar()
+        {
+            // 현재 커서의 행과 열 정보 가져오기
+            int line = MyTextArea.GetLineFromCharIndex(MyTextArea.SelectionStart) + 1;
+            int column = MyTextArea.SelectionStart - MyTextArea.GetFirstCharIndexOfCurrentLine() + 1;
+
+            // 행과 열 정보 표시
+            toolStripCursorPosition.Text = $"Ln {line}, Col {column}";
+
+            // 확대 비율
+            toolStripZoom.Text = $"Zoom: {(int)Math.Round(MyTextArea.ZoomFactor * 100)}%"; ;
+        }
+
+
 
         #endregion
 
@@ -501,6 +535,7 @@ namespace MyTextEditor
             CutTextToolTip.Enabled = isTextSelected;
             CopyTextToolTip.Enabled = isTextSelected;
             DeleteTextToolTip.Enabled = isTextSelected;
+            UpdateStatusBar();
         }
 
         //폼 종료 이벤트
@@ -542,7 +577,9 @@ namespace MyTextEditor
         }
         #endregion
 
-       
+
+
+      
     }
 
 }

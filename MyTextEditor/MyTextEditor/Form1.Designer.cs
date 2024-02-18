@@ -66,14 +66,18 @@
             ZoomINToolStripMenuItem = new ToolStripMenuItem();
             ZoomOutToolStripMenuItem = new ToolStripMenuItem();
             DefaultToolStripMenuItem = new ToolStripMenuItem();
-            상태표시줄ToolStripMenuItem = new ToolStripMenuItem();
+            StatusBarToolStripMenuItem = new ToolStripMenuItem();
             도움말HToolStripMenuItem = new ToolStripMenuItem();
             QAToolStripMenuItem = new ToolStripMenuItem();
             InformationToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
             MyTextArea = new RichTextBox();
+            statusStrip1 = new StatusStrip();
+            toolStripCursorPosition = new ToolStripStatusLabel();
+            toolStripZoom = new ToolStripStatusLabel();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -319,7 +323,7 @@
             // 
             // 보기VToolStripMenuItem
             // 
-            보기VToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 확대하기축소하기ToolStripMenuItem, 상태표시줄ToolStripMenuItem });
+            보기VToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 확대하기축소하기ToolStripMenuItem, StatusBarToolStripMenuItem });
             보기VToolStripMenuItem.Name = "보기VToolStripMenuItem";
             보기VToolStripMenuItem.Size = new Size(59, 20);
             보기VToolStripMenuItem.Text = "보기(V)";
@@ -357,11 +361,12 @@
             DefaultToolStripMenuItem.Text = "확대하기/축소하기 기본값으로";
             DefaultToolStripMenuItem.Click += DefaultToolStripMenuItem_Click;
             // 
-            // 상태표시줄ToolStripMenuItem
+            // StatusBarToolStripMenuItem
             // 
-            상태표시줄ToolStripMenuItem.Name = "상태표시줄ToolStripMenuItem";
-            상태표시줄ToolStripMenuItem.Size = new Size(175, 22);
-            상태표시줄ToolStripMenuItem.Text = "상태 표시줄";
+            StatusBarToolStripMenuItem.Name = "StatusBarToolStripMenuItem";
+            StatusBarToolStripMenuItem.Size = new Size(175, 22);
+            StatusBarToolStripMenuItem.Text = "상태 표시줄";
+            StatusBarToolStripMenuItem.Click += StatusBarToolStripMenuItem_Click;
             // 
             // 도움말HToolStripMenuItem
             // 
@@ -373,14 +378,14 @@
             // QAToolStripMenuItem
             // 
             QAToolStripMenuItem.Name = "QAToolStripMenuItem";
-            QAToolStripMenuItem.Size = new Size(180, 22);
+            QAToolStripMenuItem.Size = new Size(138, 22);
             QAToolStripMenuItem.Text = "도움말 보기";
             QAToolStripMenuItem.Click += QAToolStripMenuItem_Click;
             // 
             // InformationToolStripMenuItem
             // 
             InformationToolStripMenuItem.Name = "InformationToolStripMenuItem";
-            InformationToolStripMenuItem.Size = new Size(180, 22);
+            InformationToolStripMenuItem.Size = new Size(138, 22);
             InformationToolStripMenuItem.Text = "메모장 정보";
             InformationToolStripMenuItem.Click += InformationToolStripMenuItem_Click;
             // 
@@ -398,14 +403,47 @@
             MyTextArea.TextChanged += MyTextArea_TextChanged;
             MyTextArea.MouseWheel += 메모장_MouseWheel;
             // 
+            // statusStrip1
+            // 
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripCursorPosition, toolStripZoom });
+            statusStrip1.Location = new Point(0, 481);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(855, 22);
+            statusStrip1.TabIndex = 2;
+            statusStrip1.Text = "statusStrip1";
+            statusStrip1.Visible = false;
+            // 
+            // toolStripCursorPosition
+            // 
+            toolStripCursorPosition.AutoSize = false;
+            toolStripCursorPosition.BorderSides = ToolStripStatusLabelBorderSides.Right;
+            toolStripCursorPosition.BorderStyle = Border3DStyle.Etched;
+            toolStripCursorPosition.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripCursorPosition.Name = "toolStripCursorPosition";
+            toolStripCursorPosition.RightToLeft = RightToLeft.No;
+            toolStripCursorPosition.Size = new Size(200, 17);
+            toolStripCursorPosition.Text = "Ln 1, Col 1";
+            toolStripCursorPosition.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // toolStripZoom
+            // 
+            toolStripZoom.AutoSize = false;
+            toolStripZoom.BorderSides = ToolStripStatusLabelBorderSides.Right;
+            toolStripZoom.BorderStyle = Border3DStyle.Etched;
+            toolStripZoom.Name = "toolStripZoom";
+            toolStripZoom.Size = new Size(120, 17);
+            toolStripZoom.Text = "100%";
+            toolStripZoom.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // 메모장
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             ClientSize = new Size(855, 503);
-            Controls.Add(MyTextArea);
+            Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
+            Controls.Add(MyTextArea);
             MainMenuStrip = menuStrip1;
             Name = "메모장";
             Text = "제목없음 - 내가만든메모장";
@@ -414,6 +452,8 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -452,7 +492,7 @@
         private ToolStripMenuItem 확대ToolStripMenuItem;
         private ToolStripMenuItem 축소ToolStripMenuItem;
         private ToolStripMenuItem 기본값으로ToolStripMenuItem;
-        private ToolStripMenuItem 상태표시줄ToolStripMenuItem;
+        private ToolStripMenuItem StatusBarToolStripMenuItem;
         private BindingSource bindingSource1;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator toolStripSeparator2;
@@ -466,5 +506,8 @@
         private ToolStripMenuItem DefaultToolStripMenuItem;
         private ToolStripMenuItem QAToolStripMenuItem;
         private ToolStripMenuItem InformationToolStripMenuItem;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel toolStripCursorPosition;
+        private ToolStripStatusLabel toolStripZoom;
     }
 }
