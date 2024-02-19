@@ -9,6 +9,7 @@ namespace MyTextEditor
         public 메모장()
         {
             InitializeComponent();
+            MyTextArea.MouseWheel += MyTextArea_MouseWheel;
         }
 
         //File 변수
@@ -26,7 +27,7 @@ namespace MyTextEditor
 
         private PageSettings pageSetting = new PageSettings();
         private PrinterSettings printerSetting = new PrinterSettings();
-
+        private int zoomLevel = 10;
 
         #region 1. 파일 메뉴
 
@@ -242,6 +243,7 @@ namespace MyTextEditor
         private void DefaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MyTextArea.ZoomFactor = 1;
+            zoomLevel = 10;
             UpdateStatusBar();
         }
 
@@ -449,40 +451,65 @@ namespace MyTextEditor
             e.Graphics.DrawString(MyTextArea.Text, font, Brushes.Black, 10, 10);
         }
 
-
-        private void 메모장_MouseWheel(object sender, MouseEventArgs e)
+        private void MyTextArea_MouseWheel(object sender, MouseEventArgs e)
         {
-            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            if (ModifierKeys.HasFlag(Keys.Control))
             {
                 if (e.Delta > 0)
                 {
                     ZoomIn();
-                    
-
                 }
-                else if (e.Delta < 0)
+                else
                 {
                     ZoomOut();
                 }
             }
         }
 
+        /*
         //확대 메소드
         private void ZoomIn()
         {
-            if (MyTextArea.ZoomFactor < 64)
+            int zoomLevel = (int)(MyTextArea.ZoomFactor * 10); // ZoomFactor를 정수로 변환하여 10을 곱합니다.
+            if (zoomLevel < 640) // 최대 확대 수준(64를 기준으로 10을 곱한 값)
             {
-                MyTextArea.ZoomFactor += 0.1f;
+                zoomLevel += 1; // 0.1씩 증가하는 대신 1씩 증가.
+                MyTextArea.ZoomFactor = zoomLevel / 10f; // 정수로 변환된 값을 다시 소수점으로 변경합니다.
+                Console.WriteLine($"ZoomFactors: {MyTextArea.ZoomFactor}");
                 UpdateStatusBar();
             }
         }
 
-        //축소 메소드
+        // 축소 메소드
         private void ZoomOut()
         {
-            if (MyTextArea.ZoomFactor > 0.2f)
+            int zoomLevel = (int)(MyTextArea.ZoomFactor * 10); // ZoomFactor를 정수로 변환하여 10을 곱합니다.
+            if (zoomLevel > 20) // 최소 축소 수준(0.2를 기준으로 10을 곱한 값)
             {
-                MyTextArea.ZoomFactor -= 0.1f;
+                zoomLevel -= 1; // 0.1씩 감소하는 대신 1씩 감소합니다.
+                MyTextArea.ZoomFactor = zoomLevel / 10f; // 정수로 변환된 값을 다시 소수점으로 변경합니다.
+                Console.WriteLine($"ZoomFactors: {MyTextArea.ZoomFactor}");
+                UpdateStatusBar();
+            }
+        }*/
+        private void ZoomIn()
+        {
+            if (zoomLevel < 60) // 최대 확대 수준은 60입니다.
+            {
+                zoomLevel += 1; // 한 번의 스크롤에 대해 1씩 증가합니다.
+                MyTextArea.ZoomFactor = zoomLevel / 10f; // ZoomFactor 설정
+                Console.WriteLine($"ZoomFactors: {MyTextArea.ZoomFactor}");
+                UpdateStatusBar();
+            }
+        }
+
+        private void ZoomOut()
+        {
+            if (zoomLevel > 1) // 최소 축소 수준은 1입니다.
+            {
+                zoomLevel -= 1; // 한 번의 스크롤에 대해 1씩 감소합니다.
+                MyTextArea.ZoomFactor = zoomLevel / 10f; // ZoomFactor 설정
+                Console.WriteLine($"ZoomFactors: {MyTextArea.ZoomFactor}");
                 UpdateStatusBar();
             }
         }
@@ -519,8 +546,16 @@ namespace MyTextEditor
             // 행과 열 정보 표시
             toolStripCursorPosition.Text = $"Ln {line}, Col {column}";
 
-            // 확대 비율
-            toolStripZoom.Text = $"Zoom: {(int)Math.Round(MyTextArea.ZoomFactor * 100)}%"; ;
+            if (MyTextArea.ZoomFactor == 1)
+            {
+                // 확대 비율
+                toolStripZoom.Text = $"{(int)Math.Round(MyTextArea.ZoomFactor * 100)}%"; ;
+            }
+            else
+            {
+                // 확대 비율
+                toolStripZoom.Text = $"Zoom: {(int)Math.Round(MyTextArea.ZoomFactor * 100)}%"; ;
+            }
         }
 
 

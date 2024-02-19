@@ -401,7 +401,6 @@
             MyTextArea.WordWrap = false;
             MyTextArea.SelectionChanged += MyTextArea_SelectionChanged;
             MyTextArea.TextChanged += MyTextArea_TextChanged;
-            MyTextArea.MouseWheel += 메모장_MouseWheel;
             // 
             // statusStrip1
             // 
