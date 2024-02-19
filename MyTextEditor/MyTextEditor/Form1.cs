@@ -593,14 +593,9 @@ namespace MyTextEditor
             }
 
             //다이얼로그가 열려있는 경우 닫기
-            if (findDialog != null && !findDialog.IsDisposed)
-            {
-                findDialog.Close();
-            }
-            else if (moveDialog != null && !moveDialog.IsDisposed)
-            {
-                moveDialog.Close();
-            }
+            if (findDialog != null && !findDialog.IsDisposed){ findDialog.Close(); }
+            else if (moveDialog != null && !moveDialog.IsDisposed){moveDialog.Close();}
+            else if(changeDialog != null && !changeDialog.IsDisposed) { changeDialog.Close(); }
 
         }
 

@@ -60,6 +60,7 @@
             caseCheckBox.TabIndex = 11;
             caseCheckBox.Text = "대/소문자 구분(C)";
             caseCheckBox.UseVisualStyleBackColor = true;
+            caseCheckBox.CheckedChanged += CaseCheckBox_CheckedChanged;
             // 
             // CancleButton
             // 
@@ -69,6 +70,7 @@
             CancleButton.TabIndex = 10;
             CancleButton.Text = "취소";
             CancleButton.UseVisualStyleBackColor = true;
+            CancleButton.Click += CancleButton_Click;
             // 
             // FindButton
             // 
@@ -78,6 +80,7 @@
             FindButton.TabIndex = 9;
             FindButton.Text = "다음 찾기(F)";
             FindButton.UseVisualStyleBackColor = true;
+            FindButton.Click += FindButton_Click;
             // 
             // textBoxToSearch
             // 
@@ -104,6 +107,7 @@
             ChangeButton.TabIndex = 14;
             ChangeButton.Text = "바꾸기(R)";
             ChangeButton.UseVisualStyleBackColor = true;
+            ChangeButton.Click += ChangeButton_Click;
             // 
             // AllChangeButton
             // 
@@ -113,6 +117,7 @@
             AllChangeButton.TabIndex = 15;
             AllChangeButton.Text = "모두 바꾸기(A)";
             AllChangeButton.UseVisualStyleBackColor = true;
+            AllChangeButton.Click += AllChangeButton_Click;
             // 
             // textBoxToChange
             // 
