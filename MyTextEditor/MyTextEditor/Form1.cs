@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic;
+using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 
@@ -225,7 +226,6 @@ namespace MyTextEditor
         }
         #endregion
 
-
         #region 4. 보기 메뉴
         // 확대하기
         private void ZoomInToolStripMenuItem_Click(object sender, EventArgs e)
@@ -265,11 +265,17 @@ namespace MyTextEditor
         }
         #endregion
 
-
-        #region 4. 보기 메뉴
+        #region 5. 도움말 메뉴
         //도움말
         private void QAToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "cmd",
+                Arguments = $"/c start https://kjy1ho.tistory.com/category/%5BC%23%20%26%20C%2B%2B%5D/%5BC%23%20%EC%9C%88%ED%8F%BC%5D%20%ED%98%BC%EC%9E%90%ED%95%B4%EB%B3%B4%EB%8A%94%20%EC%9C%88%EB%8F%84%EC%9A%B0%20%EB%A9%94%EB%AA%A8%EC%9E%A5%20%EB%A7%8C%EB%93%A4%EA%B8%B0",
+                WindowStyle = ProcessWindowStyle.Hidden
+            });
+
         }
 
         //메모장 정보
@@ -466,32 +472,7 @@ namespace MyTextEditor
             }
         }
 
-        /*
         //확대 메소드
-        private void ZoomIn()
-        {
-            int zoomLevel = (int)(MyTextArea.ZoomFactor * 10); // ZoomFactor를 정수로 변환하여 10을 곱합니다.
-            if (zoomLevel < 640) // 최대 확대 수준(64를 기준으로 10을 곱한 값)
-            {
-                zoomLevel += 1; // 0.1씩 증가하는 대신 1씩 증가.
-                MyTextArea.ZoomFactor = zoomLevel / 10f; // 정수로 변환된 값을 다시 소수점으로 변경합니다.
-                Console.WriteLine($"ZoomFactors: {MyTextArea.ZoomFactor}");
-                UpdateStatusBar();
-            }
-        }
-
-        // 축소 메소드
-        private void ZoomOut()
-        {
-            int zoomLevel = (int)(MyTextArea.ZoomFactor * 10); // ZoomFactor를 정수로 변환하여 10을 곱합니다.
-            if (zoomLevel > 20) // 최소 축소 수준(0.2를 기준으로 10을 곱한 값)
-            {
-                zoomLevel -= 1; // 0.1씩 감소하는 대신 1씩 감소합니다.
-                MyTextArea.ZoomFactor = zoomLevel / 10f; // 정수로 변환된 값을 다시 소수점으로 변경합니다.
-                Console.WriteLine($"ZoomFactors: {MyTextArea.ZoomFactor}");
-                UpdateStatusBar();
-            }
-        }*/
         private void ZoomIn()
         {
             if (zoomLevel < 60) // 최대 확대 수준은 60입니다.
@@ -503,6 +484,7 @@ namespace MyTextEditor
             }
         }
 
+        //축소 메소드
         private void ZoomOut()
         {
             if (zoomLevel > 1) // 최소 축소 수준은 1입니다.
@@ -513,6 +495,7 @@ namespace MyTextEditor
                 UpdateStatusBar();
             }
         }
+        
 
         //이전 찾기, 다음 찾기
         private void FindNextPrev(string direction)
@@ -557,9 +540,6 @@ namespace MyTextEditor
                 toolStripZoom.Text = $"Zoom: {(int)Math.Round(MyTextArea.ZoomFactor * 100)}%"; ;
             }
         }
-
-
-
         #endregion
 
         #region 나머지 이벤트

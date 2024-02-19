@@ -75,6 +75,7 @@
             statusStrip1 = new StatusStrip();
             toolStripCursorPosition = new ToolStripStatusLabel();
             toolStripZoom = new ToolStripStatusLabel();
+            toolStripSeparator6 = new ToolStripSeparator();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             statusStrip1.SuspendLayout();
@@ -370,7 +371,7 @@
             // 
             // 도움말HToolStripMenuItem
             // 
-            도움말HToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { QAToolStripMenuItem, InformationToolStripMenuItem });
+            도움말HToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { QAToolStripMenuItem, toolStripSeparator6, InformationToolStripMenuItem });
             도움말HToolStripMenuItem.Name = "도움말HToolStripMenuItem";
             도움말HToolStripMenuItem.Size = new Size(72, 20);
             도움말HToolStripMenuItem.Text = "도움말(H)";
@@ -378,14 +379,14 @@
             // QAToolStripMenuItem
             // 
             QAToolStripMenuItem.Name = "QAToolStripMenuItem";
-            QAToolStripMenuItem.Size = new Size(138, 22);
+            QAToolStripMenuItem.Size = new Size(180, 22);
             QAToolStripMenuItem.Text = "도움말 보기";
             QAToolStripMenuItem.Click += QAToolStripMenuItem_Click;
             // 
             // InformationToolStripMenuItem
             // 
             InformationToolStripMenuItem.Name = "InformationToolStripMenuItem";
-            InformationToolStripMenuItem.Size = new Size(138, 22);
+            InformationToolStripMenuItem.Size = new Size(180, 22);
             InformationToolStripMenuItem.Text = "메모장 정보";
             InformationToolStripMenuItem.Click += InformationToolStripMenuItem_Click;
             // 
@@ -433,6 +434,11 @@
             toolStripZoom.Size = new Size(120, 17);
             toolStripZoom.Text = "100%";
             toolStripZoom.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // toolStripSeparator6
+            // 
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(177, 6);
             // 
             // 메모장
             // 
@@ -508,5 +514,6 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripCursorPosition;
         private ToolStripStatusLabel toolStripZoom;
+        private ToolStripSeparator toolStripSeparator6;
     }
 }
