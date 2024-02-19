@@ -12,9 +12,14 @@ namespace MyTextEditor
 {
     public partial class ChangeForm : Form
     {
-        public ChangeForm()
+        메모장 Memo;
+
+        public ChangeForm(메모장 mainMemo)
         {
+            Memo = mainMemo;
             InitializeComponent();
+            textBoxToSearch.Text = Memo.lastSearchText;
+            caseCheckBox.Checked = Memo.IsCase;
         }
     }
 }

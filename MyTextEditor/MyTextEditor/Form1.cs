@@ -7,12 +7,7 @@ namespace MyTextEditor
 {
     public partial class 메모장 : Form
     {
-        public 메모장()
-        {
-            InitializeComponent();
-            MyTextArea.MouseWheel += MyTextArea_MouseWheel;
-        }
-
+        #region 전역 변수
         //File 변수
         private string currentFilePath = string.Empty;
         private bool isTextChanged = false;
@@ -22,13 +17,26 @@ namespace MyTextEditor
         public string lastSearchText = string.Empty;
         public bool IsCase = false;
 
+        //바꾸기 폼 변수
+        private ChangeForm changeDialog;
+        public string lastChangeText = string.Empty;
+
         //줄 바꿈, 메모장 정보 변수
         private LineMoveForm moveDialog;
         private Information infoDialog;
 
         private PageSettings pageSetting = new PageSettings();
         private PrinterSettings printerSetting = new PrinterSettings();
+
         private int zoomLevel = 10;
+        #endregion
+
+        public 메모장()
+        {
+            InitializeComponent();
+            MyTextArea.MouseWheel += MyTextArea_MouseWheel;
+        }
+
 
         #region 1. 파일 메뉴
 
@@ -180,6 +188,7 @@ namespace MyTextEditor
         //바꾸기(Ctrl+H)
         private void ChangeTextToolTip_Click(object sender, EventArgs e)
         {
+            ShowDialogs("change");
         }
 
         //이동(Ctrl+G)
@@ -410,6 +419,19 @@ namespace MyTextEditor
                 {
                     findDialog.BringToFront();
                 }
+            }
+            else if(spec == "change")
+            {
+                if (changeDialog == null || changeDialog.IsDisposed)
+                {
+                    changeDialog = new ChangeForm(this);
+                    changeDialog.Show(this);
+                }
+                else
+                {
+                    changeDialog.BringToFront();
+                }
+
             }
             else if (spec == "move")
             {
